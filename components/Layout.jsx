@@ -2,8 +2,8 @@ import Head from 'next/head'
 //import { Inter } from '@next/font/google'
 //const inter = Inter({ subsets: ['latin'] })
 
-import Navigation from '../components/Navigation'
-import Footer from '../components/Footer'
+import Navigation from './Navigation'
+import Footer from './Footer'
 
 
 export default function Layout({ children }) {

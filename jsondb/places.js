@@ -50,7 +50,7 @@ const jsondb = {
             checkIn: 15,
             checkOut: 11,
             maxGuests: 8,
-            url: "p3_1674987303_bX%2BnKgbf49IaEvoC",
+            url: "b9196c40-fc03-4d7d-9e5f-5ac4231a88a6",
             extraInfo: "The condo has an alarm to give additional comfort. The condo has 2 Roku TVs to stream your favorite movies and shows. For your convenience, you will be able to open and close the garage with your phone.",
             amenities: [<i class="fa-solid fa-wifi"></i> + "Wifi", <i class="fa-solid fa-utensils"></i> + "Kitchen", <i class="fa-solid fa-square-parking"></i> + "Free parking on premises", <i class="fa-solid fa-tv"></i> + "TV", <i class="fa-solid fa-washing-machine"></i> + "Washer", <i class="fa-solid fa-paw"></i> + "Pets allowed", <i class="fa-solid fa-charging-station"></i> + "EV charger"],
             images: [
