@@ -1,11 +1,11 @@
-import Search from "../components/Search";
+import PlacesList from "../components/PlacesList";
 import Slider from "../components/Slider";
 
 export default function Home() {
   return (
     <>
       <Slider />
-      <Search />
+      <PlacesList/>
     </>
   )
 }
