@@ -19,7 +19,7 @@ function Navigation() {
             </ul>
 
             <div className="col-md-3 text-end">
-                <button type="button" className="btn btn-outline-primary btn-sm me-2">Book Now</button>
+                <button type="button" className="btn btn-outline-dark btn-sm me-2">Book Now</button>
             </div>
         </header>
         // <Navbar bg="light" expand="lg" >
