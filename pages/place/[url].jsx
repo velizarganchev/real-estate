@@ -21,13 +21,6 @@ export default function Place() {
             </div>
         )
     }
-    // if (showImg) {
-    //     return (
-    //         <Container>
-    //             <Image></Image>
-    //         </Container>
-    //     )
-    // }
     if (ShowAllFotos) {
         return (
             <>
@@ -62,14 +55,14 @@ export default function Place() {
                     {/* <div className="row row-cols-2 mt-2">
                     <Image className="rounded-3 img-fluid" src={place.images[1]} alt={place.title} width={600} height={600}/>
                 </div> */}
-                    <Row className="g-1">
+                    <Row className="g-sm-1">
                         <Col sm={7}>
-                            <Image className="img-fluid h-100" src={place.images[1]} alt={place.title} width={800} height={600} />
+                            <Image className="img-fluid h-100 p-1" src={place.images[1]} alt={place.title} width={800} height={600} />
                         </Col>
                         <Col sm={5} >
                             <div className="d-block">
-                                <Image className="img-fluid" src={place.images[0]} width={500} height={600} alt={place.title} />
-                                <Image className="img-fluid" src={place.images[2]} width={500} height={600} alt={place.title} />
+                                <Image className="img-fluid p-1" src={place.images[0]} width={500} height={600} alt={place.title} />
+                                <Image className="img-fluid p-1" src={place.images[2]} width={500} height={600} alt={place.title} />
                             </div>
 
                         </Col>
@@ -83,9 +76,9 @@ export default function Place() {
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item">
                                 <h4>{place.title}</h4>
-                                <ul className="d-flex">
-                                    <li className="mx-5">{place.maxGuests} guests</li>
-                                    <li className="mx-5">{place.beds} beds</li>
+                                <ul className="list-group list-group-horizontal">
+                                    <li className="list-group-item">{place.maxGuests} guests</li>
+                                    <li className="list-group-item">{place.beds} beds</li>
                                 </ul>
                             </li>
                             <li className="list-group-item">
@@ -121,16 +114,11 @@ export default function Place() {
                                 <input type="date" className="form-control border-bottom-0" style={{ borderBottomRightRadius: "unset" }} />
                             </div>
                             <div className="form-floating">
-                                <select className="form-select" id="floatingSelectGrid" style={{ borderTopLeftRadius: "unset", borderTopRightRadius: "unset" }}>
-                                    <option defaultValue={"1"}>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                <label htmlFor="floatingSelectGrid">Works with selects</label>
+                                <input className="form-control" defaultValue={1} min={1} type="number" id="floatingSelectGrid" style={{ borderTopLeftRadius: "unset", borderTopRightRadius: "unset" }} />
+                                <label htmlFor="floatingSelectGrid">GUESTS</label>
                             </div>
                             <div className="d-grid gap-2 mt-5">
-                                <button className="btn btn-primary btn-lg" type="button">Button</button>
+                                <button className="btn btn-primary btn-lg" type="button">Check availability</button>
                             </div>
                             <div className="mt-4">
                                 <p className="">Enter your travel dates to see the total price per night.</p>
@@ -139,8 +127,6 @@ export default function Place() {
                     </div>
                 </div>
             </div>
-            <br></br>
         </div>
-
     )
 }
