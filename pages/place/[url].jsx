@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router"
 import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
+import BookingWidget from "../../components/BookingWidget";
 import jsondb from "../../jsondb/places"
 
 export default function Place() {
@@ -103,28 +104,7 @@ export default function Place() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col col-lg-4 col-sm-12 shadow p-3 my-5 bg-body rounded" style={{ height: "400px" }}>
-                        <div className="mt-3">
-                            <div className="d-flex justify-content-between">
-                                <span className="text-uppercase p-2">Add dates for prices</span>
-                                <span className="p-2"><i className="fa-solid fa-star"></i> 5.0-12 revies</span>
-                            </div>
-                            <div className="input-group mb-0 input-group-lg my-3">
-                                <input type="date" className="form-control border-bottom-0" style={{ borderBottomLeftRadius: "unset" }} />
-                                <input type="date" className="form-control border-bottom-0" style={{ borderBottomRightRadius: "unset" }} />
-                            </div>
-                            <div className="form-floating">
-                                <input className="form-control" defaultValue={1} min={1} type="number" id="floatingSelectGrid" style={{ borderTopLeftRadius: "unset", borderTopRightRadius: "unset" }} />
-                                <label htmlFor="floatingSelectGrid">GUESTS</label>
-                            </div>
-                            <div className="d-grid gap-2 mt-5">
-                                <button className="btn btn-primary btn-lg" type="button">Check availability</button>
-                            </div>
-                            <div className="mt-4">
-                                <p className="">Enter your travel dates to see the total price per night.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <BookingWidget place={place}/>
                 </div>
             </div>
         </div>
