@@ -7,10 +7,9 @@ if (!cashed) {
 
 async function dbConnect() {
     if (cashed.con) {
-        console.log('Active')
+        //console.log('Active')
         return cashed.con;
     }
-
     if (!cashed.promise) {
 
         const options = {

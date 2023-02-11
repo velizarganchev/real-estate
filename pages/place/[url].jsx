@@ -1,19 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
 import BookingWidget from "../../components/BookingWidget";
-import jsondb from "../../jsondb/places"
 
-export default function Place() {
+import mongodb from "../../utils/mongodb";
+import Place from "../../models/Place";
 
-    const router = useRouter();
-    const { url } = router.query;
+export default function PlacePage({ place }) {
+
     const [ShowAllFotos, setShowAllFotos] = useState(false);
     const [showImg, setShowImg] = useState(false);
-
-    const place = jsondb.places.find((p) => p.url === url);
 
     if (!place) {
         return (
@@ -42,7 +40,6 @@ export default function Place() {
             </>
         )
     }
-
     return (
         <div className="container">
             <div className="mb-3">
@@ -90,7 +87,7 @@ export default function Place() {
                                 <h6 className="mb-4">This is what this accommodation offers you</h6>
                                 <ul className="d-sm-flex list-unstyled">
                                     {place.amenities.map((a) => (
-                                        <li className="px-2" key={Object.keys(a)}>{Object.values(a)} - {Object.keys(a)}</li>
+                                        <li className="px-2" key={a.text}>{a.text} - <i className={a.icon}></i></li>
                                     ))}
                                 </ul>
                             </li>
@@ -104,9 +101,20 @@ export default function Place() {
                             </li>
                         </ul>
                     </div>
-                    <BookingWidget place={place}/>
+                    <BookingWidget place={place} />
                 </div>
             </div>
         </div>
     )
+}
+export async function getServerSideProps(context) {
+    const url = context.params.url;
+
+    await mongodb.dbConnect();
+    const place = await Place.findOne({ url }).lean();
+    return {
+        props: {
+            place: JSON.parse(JSON.stringify(place))
+        }
+    }
 }

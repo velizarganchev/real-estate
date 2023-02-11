@@ -1,9 +1,14 @@
 import mongodb from "../../utils/mongodb"
+import jsondb from "../../jsondb/places";
+import Place from "../../models/Place";
 
-export default function handler(req, res) {
-  mongodb.dbConnect();
-  mongodb.dbDisconnect();
-  res.status(200).json({ name: 'John Doe' })
+export default async function handler(req, res) {
+  await mongodb.dbConnect();
+  // await Place.deleteMany();
+  // await Place.insertMany(jsondb.places);
+  const place = await Place.find({})
+  //await mongodb.dbDisconnect();
+  res.send(place)
 }
 
 // import mongodb from "../../utils/mongodb"
@@ -14,12 +19,12 @@ export default function handler(req, res) {
 // export default async function handler(req, res) {
 //   await mongodb.dbConnect();
 
-//   await Product.deleteMany();
-//   await Product.insertMany(jsondb.products);
-//   const products = await Product.find({})
+//   await Place.deleteMany();
+//   await Place.insertMany(jsondb.products);
+//   const place = await Place.find({})
 
 //   await mongodb.dbDisconnect();
 
 //   //res.send({ text: 'Data saved' })
-//   res.send(products);
-// }
+//   res.send(place);
+//}

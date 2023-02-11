@@ -1,13 +1,12 @@
-import jsondb from "../jsondb/places"
-import Image from "next/image"
-import { Card, Button, Row, Col } from "react-bootstrap"
+import { Card, Row, Col } from "react-bootstrap"
 import Link from "next/link"
 
-export default function PlacesList() {
+export default function PlacesList({ places }) {
+
     return (
         <div>
             <Row xs={1} md={3} className="g-4 mt-3">
-                {jsondb.places.map((place) => (
+                {places.map((place) => (
                     <Col key={place.url}>
                         <Card className="h-100">
                             <Link href={`/place/${place.url}`}>

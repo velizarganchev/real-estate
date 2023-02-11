@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { number } from "prop-types";
 
 const BookingShema = new mongoose.Schema({
     place: {
@@ -29,6 +30,10 @@ const BookingShema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    payment: {
+        type: Number,
+        required: true
+    }
 })
 
 export default mongoose.models.Booking || mongoose.model("Booking", BookingShema)
