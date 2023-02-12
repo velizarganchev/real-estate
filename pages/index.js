@@ -7,20 +7,20 @@ import Place from "../models/Place";
 
 export default function Home({ places }) {
   return (
-    <>
+    <div>
       <Slider />
       <Baner />
       <PlacesList places={places} />
       <Contact />
-    </>
+    </div>
   )
 }
 export async function getServerSideProps() {
   await mongodb.dbConnect();
   const places = await Place.find({}).lean();
-  return {
+  return ({
     props: {
       places: JSON.parse(JSON.stringify(places))
     }
-  }
+  })
 }

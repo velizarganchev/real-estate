@@ -11,7 +11,6 @@ import Place from "../../models/Place";
 export default function PlacePage({ place }) {
 
     const [ShowAllFotos, setShowAllFotos] = useState(false);
-    const [showImg, setShowImg] = useState(false);
 
     if (!place) {
         return (
@@ -31,7 +30,6 @@ export default function PlacePage({ place }) {
                         {place.images.map((i) => (
                             <Col key={i.toString()} xs={12} md={6} xl={4} >
                                 <Image
-                                    // onClick={() => setShowImg(true)} 
                                     className="img-fluid h-100" src={i} width={500} height={500} alt={place.title} />
                             </Col>
                         ))}
