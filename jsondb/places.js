@@ -3,7 +3,7 @@ const jsondb = {
         {
             title: "Steps to Sand 2B2B Luxury Hideaway A+ Location!!",
             address: "Newport Beach, California, United States",
-            price: 400,
+            price: 40,
             beds: 3,
             description: "Popular location on the Balboa Peninsula! Your family will be close to everything when you stay at this centrally-located place! The beautiful beach is steps away from this stylish beach-inspired, 2 bedroom 2 bathroom vacation stay.",
             checkIn: 3,
@@ -30,7 +30,7 @@ const jsondb = {
         {
             title: "Private Patio-Smart TV-10mins>Beach, 20mins>Disney",
             address: "Fountain Valley, California, United States",
-            price: 350,
+            price: 35,
             beds: 4,
             description: "Enjoy luxury and comfort at this BRAND NEW, bright, renovated 3 bedroom / 3 bathroom house near Huntington Beach!! Enjoy TONS of natural light during the day, a meal on the private patio at night, and a movie on your favorite streaming service on the 60 TV before bed. With high speed WiFi, it's the perfect place to work from home or spend time with the family. The bedrooms are cozy, bathrooms luxurious, and the kitchen fully stocked with coffee, pots, pans, and high-end appliances.",
             checkIn: 3,
@@ -58,7 +58,7 @@ const jsondb = {
         {
             title: "New Luxury Disneyland Penthouse!",
             address: "Anaheim, California, United States",
-            price: 400,
+            price: 40,
             beds: 6,
             description: "Short distance to Disneyland, Angel Stadium, Honda Center, Starbucks and many well-known food outlets. The newly built townhouse spans three floors and features an open floor plan, gourmet kitchen, and rooftop terrace! The home is fully furnished with brand new furniture and has free pool access. New appliances including washer and dryer.",
             checkIn: 3,

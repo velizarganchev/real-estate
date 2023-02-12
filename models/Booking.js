@@ -1,20 +1,23 @@
 import mongoose from "mongoose";
-import { number } from "prop-types";
 
 const BookingShema = new mongoose.Schema({
     place: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true
     },
     checkIn: {
         type: Date,
         required: true,
     },
-    checkout: {
+    checkOut: {
         type: Date,
         required: true,
     },
     name: {
+        type: String,
+        required: true
+    },
+    address: {
         type: String,
         required: true
     },
