@@ -26,7 +26,7 @@ const jsondb = {
                 "/images/places/firstPlace/6.jpg"
             ]
 
-         },
+        },
         {
             title: "Private Patio-Smart TV-10mins>Beach, 20mins>Disney",
             address: "Fountain Valley, California, United States",
