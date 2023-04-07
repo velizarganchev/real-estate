@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 
 const BookingShema = new mongoose.Schema({
     place: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true
     },
     checkIn: {
         type: Date,
         required: true,
     },
-    checkout: {
+    checkOut: {
         type: Date,
         required: true,
     },
@@ -17,7 +17,11 @@ const BookingShema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phone: {
+    address: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String,
         required: true
     },
@@ -29,6 +33,10 @@ const BookingShema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    payment: {
+        type: Number,
+        required: true
+    }
 })
 
 export default mongoose.models.Booking || mongoose.model("Booking", BookingShema)

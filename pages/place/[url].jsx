@@ -1,18 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
-import jsondb from "../../jsondb/places"
+import BookingWidget from "../../components/BookingWidget";
 
-export default function Place() {
+import mongodb from "../../utils/mongodb";
+import Place from "../../models/Place";
 
-    const router = useRouter();
-    const { url } = router.query;
+export default function PlacePage({ place }) {
+
     const [ShowAllFotos, setShowAllFotos] = useState(false);
-    const [showImg, setShowImg] = useState(false);
-
-    const place = jsondb.places.find((p) => p.url === url);
 
     if (!place) {
         return (
@@ -32,7 +30,6 @@ export default function Place() {
                         {place.images.map((i) => (
                             <Col key={i.toString()} xs={12} md={6} xl={4} >
                                 <Image
-                                    // onClick={() => setShowImg(true)} 
                                     className="img-fluid h-100" src={i} width={500} height={500} alt={place.title} />
                             </Col>
                         ))}
@@ -41,7 +38,6 @@ export default function Place() {
             </>
         )
     }
-
     return (
         <div className="container">
             <div className="mb-3">
@@ -89,7 +85,7 @@ export default function Place() {
                                 <h6 className="mb-4">This is what this accommodation offers you</h6>
                                 <ul className="d-sm-flex list-unstyled">
                                     {place.amenities.map((a) => (
-                                        <li className="px-2" key={Object.keys(a)}>{Object.values(a)} - {Object.keys(a)}</li>
+                                        <li className="px-2" key={a.text}>{a.text} - <i className={a.icon}></i></li>
                                     ))}
                                 </ul>
                             </li>
@@ -103,30 +99,20 @@ export default function Place() {
                             </li>
                         </ul>
                     </div>
-                    <div className="col col-lg-4 col-sm-12 shadow p-3 my-5 bg-body rounded" style={{ height: "400px" }}>
-                        <div className="mt-3">
-                            <div className="d-flex justify-content-between">
-                                <span className="text-uppercase p-2">Add dates for prices</span>
-                                <span className="p-2"><i className="fa-solid fa-star"></i> 5.0-12 revies</span>
-                            </div>
-                            <div className="input-group mb-0 input-group-lg my-3">
-                                <input type="date" className="form-control border-bottom-0" style={{ borderBottomLeftRadius: "unset" }} />
-                                <input type="date" className="form-control border-bottom-0" style={{ borderBottomRightRadius: "unset" }} />
-                            </div>
-                            <div className="form-floating">
-                                <input className="form-control" defaultValue={1} min={1} type="number" id="floatingSelectGrid" style={{ borderTopLeftRadius: "unset", borderTopRightRadius: "unset" }} />
-                                <label htmlFor="floatingSelectGrid">GUESTS</label>
-                            </div>
-                            <div className="d-grid gap-2 mt-5">
-                                <button className="btn btn-primary btn-lg" type="button">Check availability</button>
-                            </div>
-                            <div className="mt-4">
-                                <p className="">Enter your travel dates to see the total price per night.</p>
-                            </div>
-                        </div>
-                    </div>
+                    <BookingWidget place={place} />
                 </div>
             </div>
         </div>
     )
+}
+export async function getServerSideProps(context) {
+    const url = context.params.url;
+
+    await mongodb.dbConnect();
+    const place = await Place.findOne({ url }).lean();
+    return {
+        props: {
+            place: JSON.parse(JSON.stringify(place))
+        }
+    }
 }

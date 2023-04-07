@@ -38,7 +38,7 @@ const PlaceShema = new mongoose.Schema({
     url: {
         type: String,
         required: true,
-        maxlength: 50,
+        maxlength: 60,
         unique: true
     },
     extraInfo: {
@@ -48,19 +48,19 @@ const PlaceShema = new mongoose.Schema({
         type: [
             {
                 text: {
-                    type: String
+                    type: String,
+                    required: true
                 },
                 icon: {
-                    type: String
+                    type: String,
+                    required: true
                 }
             }
         ],
         required: true,
     },
     images: {
-        type: [
-            String
-        ],
+        type: [],
         required: true,
     }
 },
