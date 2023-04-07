@@ -7,18 +7,16 @@ import {
     PayPalButtons,
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
-import axios from "axios";
-import { useRouter } from "next/router";
+
 
 export default function BookingWidget({ place }) {
 
     const [checkIn, setCheckIn] = useState('');
     const [checkOut, setCheckOut] = useState('');
     const [numberOfGuests, setNumberOfGuests] = useState(1);
-    // const [fullName, setFullName] = useState('');
-    // const [email, setEmail] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
     const [toCheckOut, setToCheckOut] = useState(false)
-    const router = useRouter();
 
     const clientId = "AY8JulNf1V06YMw3DmwucquBb2QAIekpqS9Pd_C-GD1Tuane5DI0fpLh8NhB7ZPQQtL-1ZLJDNEkVMh-";
 
@@ -31,18 +29,6 @@ export default function BookingWidget({ place }) {
     const amount = numberOfNights * place.price;
     const currency = "USD";
     const style = { "layout": "vertical" };
-
-    const createBooking = async (data) => {
-        try {
-            const res = await axios.post("http://localhost:3000/api/places", data);
-            if (res.status === 201) {
-                router.push(`/places/${res.data._id}`);
-            }
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const ButtonWrapper = ({ currency, showSpinner }) => {
         // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
@@ -85,19 +71,8 @@ export default function BookingWidget({ place }) {
                         });
                 }}
                 onApprove={function (data, actions) {
-                    return actions.order.capture().then(function (details) {
-                        const client = details.purchase_units[0];
-                        createBooking({
-                            place: place.title,
-                            checkIn: checkIn,
-                            checkOut: checkOut,
-                            name: client.shipping.name.full_name,
-                            address: client.shipping.address.address_line_1 + ", " + client.shipping.address.admin_area_1,
-                            email: client.payee.email_address,
-                            numberOfGuests: numberOfGuests,
-                            price: numberOfNights * place.price,
-                            payment: 1
-                        })
+                    return actions.order.capture().then(function () {
+                        // Your code here after capture the order
                     });
                 }}
             />
@@ -140,6 +115,30 @@ export default function BookingWidget({ place }) {
                         id="floatingSelectGrid"
                         style={{ borderRadius: "unset" }} />
                     <label htmlFor="floatingSelectGrid">GUESTS</label>
+                    {
+                        numberOfNights > 0 && (
+                            <div>
+                                <div className="form-floating">
+                                    <input
+                                        value={fullName}
+                                        onChange={ev => setFullName(ev.target.value)}
+                                        className="form-control"
+                                        type="text" id="fullName"
+                                        style={{ borderRadius: "unset" }} />
+                                    <label htmlFor="fullName">Your full name</label>
+                                </div>
+                                <div className="form-floating">
+                                    <input
+                                        value={email}
+                                        onChange={ev => setEmail(ev.target.value)}
+                                        className="form-control"
+                                        type="text" id="email"
+                                        style={{ borderTopLeftRadius: "unset", borderTopRightRadius: "unset" }} />
+                                    <label htmlFor="email">Email</label>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div className="d-grid gap-2 mt-5">
