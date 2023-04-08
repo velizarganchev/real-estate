@@ -39,7 +39,7 @@ export default function PlacePage({ place }) {
         )
     }
     return (
-        <div className="container">
+        <div className="container pt-4">
             <div className="mb-3">
                 <Link className="text-dark" href={"/"}>← back to Home</Link>
             </div>

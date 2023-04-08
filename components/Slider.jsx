@@ -1,20 +1,46 @@
-import { Carousel, CarouselItem } from "react-bootstrap"
-import Image from "next/image"
+import Carousel from 'react-bootstrap/Carousel';
 
 export default function Slider() {
-    return (
-        <div>
-            <Carousel controls={false} fade={true} interval={2000}>
-                <CarouselItem>
-                    <Image className="d-block w-100 rounded-3" src='/images/carusel/real-estate1.jpg' alt="Name" width={3000} height={350} />
-                </CarouselItem>
-                <CarouselItem>
-                    <Image className="d-block w-100 rounded-3" src='/images/carusel/real-estate2.jpg' alt="Name" width={3000} height={350} />
-                </CarouselItem>
-                <CarouselItem>
-                    <Image className="d-block w-100 rounded-3" src='/images/carusel/real-estate3.jpg' alt="Name" width={3000} height={350} />
-                </CarouselItem>
-            </Carousel>
-        </div>
-    )
+  return (
+    <Carousel slide={false}>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="/images/carusel/caruselOne.jpg"
+          alt="First slide"
+        />
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="/images/carusel/caruselTwo.jpeg"
+          alt="Second slide"
+        />
+
+        <Carousel.Caption>
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="/images/carusel/caruselTree.jpg"
+          alt="Third slide"
+        />
+
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+  );
 }
+

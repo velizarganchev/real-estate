@@ -9,9 +9,11 @@ export default function Home({ places }) {
   return (
     <div>
       <Slider />
-      <Baner />
-      <PlacesList places={places} />
-      <Contact />
+      <div className='container'>
+        <Baner />
+        <PlacesList places={places} />
+        <Contact />
+      </div>
     </div>
   )
 }

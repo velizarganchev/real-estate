@@ -1,10 +1,21 @@
 
 export default function Baner() {
     return (
-        <div className="p-4 my-4 bg-light rounded-3">
-            <h2 className="text-center fw-bold mb-2">Luxury Meets Comfort</h2>
-            <p className="fs-5">EK Luxury Stays provides comfortable, authentic living experiences in the most desirable neighborhoods. We mix design, comfort, and top notch service to guarantee an exceptional experience. With crisp white linens, fresh towels, high-end appliances and decor, every EK property is beautifully furnished and fully stocked.
-                Our team is available 24/7 to respond to your needs and ensure an incredible stay.</p>
-        </div>
+        <section id="about" className="about m-2 p-3 text-center">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-12 col-md-12 col-12 ps-lg-5 mt-md-5">
+                        <div className="about-text">
+                            <h2>We Provide Beste Quality <br /> Servise Ever</h2>
+                            <p>
+                                We understand that finding comfortable and convenient housing for your business or vacation needs can be a daunting task, which is why we are here to simplify the process for you!
+                                Our mission is to provide top-quality housing solutions that cater to the unique needs of business executives, travelers, and families.
+                            </p>
+                            <a href="/about" className="btn btn-outline-dark">About Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     )
 }

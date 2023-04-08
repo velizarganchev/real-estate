@@ -1,7 +1,9 @@
-import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '../styles/Custom.scss'
+import '../styles/Global.css'
+
+
 import Layout from '../components/Layout'
-import '../styles/custom.scss'
 import '../node_modules/@fortawesome/fontawesome-free/css/all.css'
 // import store from '../redux/store'
 // import { Provider } from 'react-redux'

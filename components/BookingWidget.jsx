@@ -155,8 +155,8 @@ export default function BookingWidget({ place }) {
                         />
                     </PayPalScriptProvider>) : <button
                         onClick={() => setToCheckOut(true)}
-                        className="btn btn-primary btn-lg"
-                        type="button">
+                        className="btn btn-outline-dark btn-lg"
+                        type="button" disabled={email.length >= 1 ? ('') : 'disabled'}>
                         {
                             numberOfNights > 0 ? ("Book this place $" + numberOfNights * place.price) :
                                 ("Check availability")
