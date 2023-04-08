@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import '../styles/Custom.scss'
-import '../styles/Global.css'
+import '../styles/custom.scss'
+import '../styles/global.css'
 
 
 import Layout from '../components/Layout'
