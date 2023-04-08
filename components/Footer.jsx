@@ -13,9 +13,9 @@ export default function Footer() {
                 </div>
 
                 <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
-                    <li className="ms-3"><a className="text-muted" href="https://www.facebook.com/sierrah.scarpine/"><i className="fa-brands fa-facebook"></i></a></li>
-                    <li className="ms-3"><a className="text-muted" href="https://www.instagram.com/sierrahscarpine/"><i className="fa-brands fa-instagram"></i></a></li>
-                    <li className="ms-3"><a className="text-muted" href="https://www.linkedin.com/in/sierrah-scarpine-113b2b154/"><i className="fa-brands fa-linkedin"></i></a></li>
+                    <li className="ms-3"><Link className="text-muted" href="https://www.facebook.com/sierrah.scarpine/"><i className="fa-brands fa-facebook"></i></Link></li>
+                    <li className="ms-3"><Link className="text-muted" href="https://www.instagram.com/sierrahscarpine/"><i className="fa-brands fa-instagram"></i></Link></li>
+                    <li className="ms-3"><Link className="text-muted" href="https://www.linkedin.com/in/sierrah-scarpine-113b2b154/"><i className="fa-brands fa-linkedin"></i></Link></li>
                 </ul>
             </footer>
         </div>

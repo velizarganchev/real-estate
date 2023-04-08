@@ -1,3 +1,6 @@
+import Image from "next/image";
+import Link from "next/link";
+
 export default function about() {
     return (
         <section id="about" class="about section-padding">
@@ -5,7 +8,7 @@ export default function about() {
                 <div class="row">
                     <div class="col-lg-4 col-md-12 col-12">
                         <div class="about-img">
-                            <img src="images/aboutImg.jpg" alt="" class="img-fluid" />
+                            <Image src="/images/aboutImg.jpg" alt="" class="img-fluid" width={400} height={300} />
                         </div>
                     </div>
                     <div class="col-lg-8 col-md-12 col-12 ps-lg-2">
@@ -29,7 +32,7 @@ export default function about() {
                                 We look forward to serving you and ensuring that your stay with us is a pleasant and
                                 memorable experience.
                             </p>
-                            <a href="/contact" class="btn btn-outline-dark">Contact Us</a>
+                            <Link href="/contact" class="btn btn-outline-dark">Contact Us</Link>
                         </div>
                     </div>
                 </div>

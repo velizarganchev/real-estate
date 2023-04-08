@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function about() {
     return (
         <section id="about" className="about section-padding">
@@ -5,7 +7,7 @@ export default function about() {
                 <div className="row">
                     <div className="col-lg-4 col-md-12 col-12">
                         <div className="about-img">
-                            <img src="https://scontent-dus1-1.xx.fbcdn.net/v/t1.6435-9/68240731_2790499901004306_9113946968916230144_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=o3w1qvjAYxYAX_j5Klc&_nc_oc=AQm1La_oyeNSHzVU4Xj9gy2cagVV7jq67LIaO_E-zFbtcWl00nrXm_etlFKviw17Q7rBg0C9yGco6f6SoV_Iwdm8&_nc_ht=scontent-dus1-1.xx&oh=00_AfB44BKZl0YDcbus-P6iwmJJYgbtGSuGhxSA1mnu90lLXQ&oe=64589CE6" alt="" className="img-fluid" />
+                            <Image src="/images/sierrahScarpin.jpg" alt="" className="img-fluid" width={400} height={300} />
                         </div>
                     </div>
                     <div className="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">

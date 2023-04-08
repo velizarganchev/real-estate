@@ -1,3 +1,4 @@
+import Link from "next/link";
 
 export default function Baner() {
     return (
@@ -11,7 +12,7 @@ export default function Baner() {
                                 We understand that finding comfortable and convenient housing for your business or vacation needs can be a daunting task, which is why we are here to simplify the process for you!
                                 Our mission is to provide top-quality housing solutions that cater to the unique needs of business executives, travelers, and families.
                             </p>
-                            <a href="/about" className="btn btn-outline-dark">About Us</a>
+                            <Link href="/about" className="btn btn-outline-dark">About Us</Link>
                         </div>
                     </div>
                 </div>
