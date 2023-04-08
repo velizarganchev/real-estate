@@ -5,7 +5,7 @@ export default function specialties() {
                 <div className="row">
                     <div className="col-md-12">
                         <div className="section-header text-center pb-5">
-                            <h2>Our Services</h2>
+                            <h1>Our Services</h1>
                             <p>We offer a wide range of specialized housing solutions to cater to the unique needs of our clients. We understand that business travel and relocation can be stressful,
                                 which is why we offer tailored accommodations to ensure a comfortable and enjoyable stay!
                             </p>

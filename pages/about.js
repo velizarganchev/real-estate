@@ -5,10 +5,10 @@ export default function about() {
                 <div class="row">
                     <div class="col-lg-4 col-md-12 col-12">
                         <div class="about-img">
-                            <img src="images/places/firstPlace/4.jpg" alt="" class="img-fluid" />
+                            <img src="images/aboutImg.jpg" alt="" class="img-fluid" />
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">
+                    <div class="col-lg-8 col-md-12 col-12 ps-lg-2">
                         <div class="about-text">
                             <h2>About Us</h2>
                             <p>
@@ -29,7 +29,7 @@ export default function about() {
                                 We look forward to serving you and ensuring that your stay with us is a pleasant and
                                 memorable experience.
                             </p>
-                            <a href="" class="btn btn-outline-dark">Contact Us</a>
+                            <a href="/contact" class="btn btn-outline-dark">Contact Us</a>
                         </div>
                     </div>
                 </div>
