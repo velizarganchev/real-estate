@@ -1,6 +1,6 @@
 const jsondb = {
     places: [
-        {
+        {   
             title: "Steps to Sand 2B2B Luxury Hideaway A+ Location!!",
             address: "Newport Beach, California, United States",
             price: 400,
