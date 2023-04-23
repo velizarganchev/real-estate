@@ -3,16 +3,16 @@ import Link from "next/link";
 
 export default function about() {
     return (
-        <section id="about" class="about section-padding">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-12 col-12">
-                        <div class="about-img">
-                            <Image src="/images/aboutImg.jpg" alt="" class="img-fluid" width={400} height={300} />
+        <section id="about" className="about section-padding">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-4 col-md-12 col-12">
+                        <div className="about-img">
+                            <Image src="/images/aboutImg.jpg" alt="" className="img-fluid" width={400} height={300} />
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-12 col-12 ps-lg-2">
-                        <div class="about-text">
+                    <div className="col-lg-8 col-md-12 col-12 ps-lg-2">
+                        <div className="about-text">
                             <h2>About Us</h2>
                             <p>
                                 We offer a wide range of fully furnished and serviced apartments, condominiums, and houses
@@ -32,7 +32,7 @@ export default function about() {
                                 We look forward to serving you and ensuring that your stay with us is a pleasant and
                                 memorable experience.
                             </p>
-                            <Link href="/contact" class="btn btn-outline-dark">Contact Us</Link>
+                            <Link href="/contact" className="btn btn-outline-dark">Contact Us</Link>
                         </div>
                     </div>
                 </div>

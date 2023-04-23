@@ -30,7 +30,8 @@ export default function PlacePage({ place }) {
                         {place.images.map((i) => (
                             <Col key={i.toString()} xs={12} md={6} xl={4} >
                                 <Image
-                                    className="img-fluid h-100" src={i} width={500} height={500} alt={place.title} />
+                                    className="img-fluid h-100" src={i} width={500} height={500} alt={place.name}
+                                />
                             </Col>
                         ))}
                     </Row>
@@ -46,19 +47,19 @@ export default function PlacePage({ place }) {
 
             <div>
                 <div className="position-relative">
-                    <h1>{place.title}</h1>
+                    <h1>{place.name}</h1>
                     <h5>{place.address}</h5>
                     {/* <div className="row row-cols-2 mt-2">
                     <Image className="rounded-3 img-fluid" src={place.images[1]} alt={place.title} width={600} height={600}/>
                 </div> */}
                     <Row className="g-sm-1">
                         <Col sm={7}>
-                            <Image className="img-fluid h-100 p-1" src={place.images[1]} alt={place.title} width={800} height={600} />
+                            <Image className="img-fluid h-100 p-1" src={place.images[1]} alt={place.name} width={800} height={600} />
                         </Col>
                         <Col sm={5} >
                             <div className="d-block">
-                                <Image className="img-fluid p-1" src={place.images[0]} width={500} height={600} alt={place.title} />
-                                <Image className="img-fluid p-1" src={place.images[2]} width={500} height={600} alt={place.title} />
+                                <Image className="img-fluid p-1" src={place.images[0]} width={500} height={600} alt={place.name} />
+                                <Image className="img-fluid p-1" src={place.images[2]} width={500} height={600} alt={place.name} />
                             </div>
 
                         </Col>
@@ -71,10 +72,10 @@ export default function PlacePage({ place }) {
                     <div className="col col-lg-8 col-sm-12">
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item">
-                                <h4>{place.title}</h4>
+                                <h4>{place.name}</h4>
                                 <ul className="list-group list-group-horizontal">
-                                    <li className="list-group-item">{place.maxGuests} guests</li>
-                                    <li className="list-group-item">{place.beds} beds</li>
+                                    <li className="list-group-item">{place.guestCapacity} guests</li>
+                                    <li className="list-group-item">{place.numOfBeds} beds</li>
                                 </ul>
                             </li>
                             <li className="list-group-item">
@@ -94,7 +95,7 @@ export default function PlacePage({ place }) {
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item">Check-in after {place.checkIn} PM</li>
                                     <li className="list-group-item">Checkout before {place.checkOut} AM</li>
-                                    <li className="list-group-item">Maximum {place.maxGuests} guests</li>
+                                    <li className="list-group-item">Maximum {place.guestCapacity} guests</li>
                                 </ul>
                             </li>
                         </ul>

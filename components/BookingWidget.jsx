@@ -26,7 +26,7 @@ export default function BookingWidget({ place }) {
         numberOfNights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
     }
 
-    const amount = numberOfNights * place.price;
+    const amount = numberOfNights * place.pricePerNight;
     const currency = "USD";
     const style = { "layout": "vertical" };
 
@@ -86,7 +86,7 @@ export default function BookingWidget({ place }) {
                 <div className="d-flex justify-content-between">
                     <span className="text-uppercase p-2">
                         {numberOfNights > 0 ?
-                            <strong className="fs-2">{numberOfNights * place.price} $</strong> :
+                            <strong className="fs-2">{numberOfNights * place.pricePerNight} $</strong> :
                             ("Add dates for prices")}
                     </span>
                     <span className="p-2"><i className="fa-solid fa-star"></i> 5.0-12 revies</span>
@@ -111,7 +111,7 @@ export default function BookingWidget({ place }) {
                         value={numberOfGuests}
                         onChange={ev => setNumberOfGuests(ev.target.value)}
                         min={1} type="number"
-                        max={place.maxGuests}
+                        max={place.guestCapacity}
                         id="floatingSelectGrid"
                         style={{ borderRadius: "unset" }} />
                     <label htmlFor="floatingSelectGrid">GUESTS</label>
@@ -158,7 +158,7 @@ export default function BookingWidget({ place }) {
                         className="btn btn-outline-dark btn-lg"
                         type="button" disabled={email.length >= 1 ? ('') : 'disabled'}>
                         {
-                            numberOfNights > 0 ? ("Book this place $" + numberOfNights * place.price) :
+                            numberOfNights > 0 ? ("Book this place $" + numberOfNights * place.pricePerNight) :
                                 ("Check availability")
                         }
                     </button>}
