@@ -1,8 +1,12 @@
 import { Card, Row, Col } from "react-bootstrap"
 import Link from "next/link"
+import { useSelector } from "react-redux"
 
-export default function PlacesList({ places }) {
+export default function PlacesList() {
 
+    const { allPlaces } = useSelector(state => state)
+    const places = allPlaces.places
+    //console.log(allPlaces.places)
     return (
         <div>
             <Row xs={1} md={2} className="g-4 mt-3">

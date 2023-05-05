@@ -4,15 +4,19 @@ import '../styles/style.css'
 
 import Layout from '../components/Layout'
 import '../node_modules/@fortawesome/fontawesome-free/css/all.css'
-// import store from '../redux/store'
-// import { Provider } from 'react-redux'
 
-export default function App({ Component, pageProps }) {
+import { Provider } from 'react-redux'
+import { wrapper } from '../redux/store'
+
+
+export default function App({ Component, ...rest }) {
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { pageProps } = props;
   return (
-    //<Provider store={store}>
+    <Provider store={store}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    //</Provider>
+    </Provider>
   )
 }

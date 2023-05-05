@@ -1,12 +1,12 @@
 const jsondb = {
     places: [
         {
-            "name": "Charming Studio < 10 Miles to Wells' Beaches!",
-            "pricePerNight": 168,
-            "description": "A friendly atmosphere and natural delights await your visit to the town of Wells! Stay at this well-equipped 1-bath studio and enjoy easy access to several beaches, including Wells Beach and Drakes Island Beach, as well as Rachel Carson National Wildlife Refuge - the best spot for wildlife viewing just 8 miles away. Not to mention, with the downtown area just 10 minutes from the vacation rental,",
-            "address": "4667 Bicetown Street, New York, NY, 10004",
-            "guestCapacity": 1,
-            "numOfBeds": 1,
+            "name": "BBQPatio-Smart TV, PS4-10mins>Beach, 20mins>Disney",
+            "pricePerNight": 388,
+            "description": "Enjoy TONS of natural light during the day, grill a nice meal on the private patio at night, and enjoy a movie or some PS4 games on the 60 TV before bed. With high speed WiFi, its the perfect place to work from home or spend time with the family.",
+            "address": "Fountain Valley, California, United States",
+            "guestCapacity": 8,
+            "numOfBeds": 4,
             "checkIn": 3,
             "checkOut": 10,
             "extraInfo": "Absolutely NO smoking of any kind inside the house, NO parties Absolutely, NO pets allowe",
@@ -26,12 +26,12 @@ const jsondb = {
             ]
         },
         {
-            "name": "Picturesque 2-Story Farmhouse w/Private Hot Tub",
+            "name": "New Luxury Disneyland Penthouse!",
             "pricePerNight": 242,
-            "description": "Find plenty of space for a family or a large group at this picturesque Wells home, the perfect spot for a relaxing getaway in charming, quintessential Maine style! Spend your days on the beautiful nearby beaches, and come home to a large backyard and orchard where your kids can play, as well as a patio with a gas grill for barbecues on summer afternoons.",
-            "address": "200 Olympic Dr, Stafford, VS, 22554",
-            "guestCapacity": 2,
-            "numOfBeds": 2,
+            "description": "Short distance to Disneyland, Angel Stadium, Honda Center, Starbucks and many well-known food outlets. The newly built townhouse spans three floors and features an open floor plan, gourmet kitchen, and rooftop terrace! The home is fully furnished with brand new furniture and has free pool access. New appliances including washer and dryer.",
+            "address": "Anaheim, California, United States",
+            "guestCapacity": 8,
+            "numOfBeds": 6,
             "checkIn": 3,
             "checkOut": 10,
             "extraInfo": "There is a Ring camera outside for your safety and to ensure only registered guests are entering the property.",
@@ -43,12 +43,12 @@ const jsondb = {
                 { "text": "Public or shared beach access", "icon": "fa-solid fa-umbrella-beach" }
             ],
             "images": [
-                "/images/places/firstPlace/1.png",
-                "/images/places/firstPlace/2.png",
-                "/images/places/firstPlace/3.png",
-                "/images/places/firstPlace/4.jpg",
-                "/images/places/firstPlace/5.jpg",
-                "/images/places/firstPlace/6.jpg"
+                "/images/places/thirdPlace/1.png",
+                "/images/places/thirdPlace/2.png",
+                "/images/places/thirdPlace/3.png",
+                "/images/places/thirdPlace/4.jpg",
+                "/images/places/thirdPlace/5.jpg",
+                "/images/places/thirdPlace/6.jpg"
             ],
         },
     ]

@@ -6,11 +6,12 @@ export default function Slider() {
         <Carousel slide={false}>
             <Carousel.Item> 
                 <Image
-                    width={1200}
+                    width={1600}
                     height={600}
-                    className="d-block w-100"
+                    className="d-block"
                     src="/images/carusel/1.png"
                     alt="First slide"
+                    priority={true}
                 />
                 <Carousel.Caption>
                     <h5>First</h5>
@@ -19,9 +20,9 @@ export default function Slider() {
             </Carousel.Item>
             <Carousel.Item>
                 <Image
-                    width={1200}
+                    width={1600}
                     height={600}
-                    className="d-block w-100"
+                    className="d-block"
                     src="/images/carusel/2.png"
                     alt="Second slide"
                 />
@@ -33,9 +34,9 @@ export default function Slider() {
             </Carousel.Item>
             <Carousel.Item>
                 <Image
-                    width={1200}
+                    width={1600}
                     height={600}
-                    className="d-block w-100"
+                    className="d-block"
                     src="/images/carusel/3.png"
                     alt="Third slide"
                 />

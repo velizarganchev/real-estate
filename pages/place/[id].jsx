@@ -107,10 +107,9 @@ export default function PlacePage({ place }) {
     )
 }
 export async function getServerSideProps(context) {
-    const url = context.params.url;
-
+    const _id = context.params.id;
     await mongodb.dbConnect();
-    const place = await Place.findOne({ url }).lean();
+    const place = await Place.findById({ _id }).lean();
     return {
         props: {
             place: JSON.parse(JSON.stringify(place))

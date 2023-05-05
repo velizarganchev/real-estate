@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require( "mongoose")
 
 const PlaceShema = new mongoose.Schema({
     name: {
@@ -101,7 +101,7 @@ const PlaceShema = new mongoose.Schema({
     // { timestamps: true }
 )
 
-export default mongoose.models.Place || mongoose.model("Place", PlaceShema)
+module.exports = mongoose.models.Place || mongoose.model("Place", PlaceShema)
 
 
 // title: {

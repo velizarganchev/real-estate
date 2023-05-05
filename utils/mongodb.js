@@ -15,6 +15,8 @@ async function dbConnect() {
         const options = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true,
             bufferCommands: false,
         };
 

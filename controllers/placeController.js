@@ -1,10 +1,10 @@
-import mongodb from "../utils/mongodb"
 import Place from "../models/Place";
 
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import APIFeatures from "../utils/apiFeatures";
 
+// Get All Places
 const allPlaces = catchAsyncErrors(async (req, res) => {
 
     const resPerPage = 4;
