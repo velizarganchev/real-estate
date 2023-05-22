@@ -16,9 +16,7 @@ export default function Layout({ children, title = 'Book Best Place for your Hol
             </Head>
             <Navigation />
             <ToastContainer position='bottom-right' />
-            <div>
-                {children}
-            </div>
+            {children}
             <Footer />
         </div>
     )

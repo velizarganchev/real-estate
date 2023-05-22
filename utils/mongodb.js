@@ -15,10 +15,11 @@ async function dbConnect() {
         const options = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true,
-            bufferCommands: false,
+            // useFindAndModify: false,
+            // useCreateIndex: true,
+            bufferCommands: true,
         };
+        mongoose.set('strictQuery', false);
 
         cashed.promise = mongoose.connect(process.env.MONGODB_URI, options).then(mongoose => {
             return mongoose;

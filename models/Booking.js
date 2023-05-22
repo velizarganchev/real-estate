@@ -1,38 +1,50 @@
 import mongoose from "mongoose";
-import { number } from "prop-types";
+//const timeZone = require('mongoose-timezone');
 
 const BookingShema = new mongoose.Schema({
     place: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'Place'
     },
-    checkIn: {
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
+    checkInDate: {
         type: Date,
         required: true,
     },
-    checkout: {
+    checkOutDate: {
         type: Date,
         required: true,
     },
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    numberOfGuests: {
+    amountPaid: {
         type: Number,
         required: true,
     },
-    price: {
+    daysOfStay: {
         type: Number,
-        required: true
+        required: true,
     },
-    payment: {
-        type: Number,
-        required: true
+    paymentInfo: {
+        id: {
+            type: String,
+            required: true,
+        },
+        status: {
+            type: String,
+            required: true,
+        }
+    },
+    paidAt: {
+        type: Date,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 })
 

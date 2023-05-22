@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+
 import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
+
 import BookingWidget from "../../components/BookingWidget";
 
-import mongodb from "../../utils/mongodb";
-import Place from "../../models/Place";
+import absoluteUrl from "next-absolute-url";
+import axios from "axios";
 
 export default function PlacePage({ place }) {
 
@@ -106,13 +107,15 @@ export default function PlacePage({ place }) {
         </div>
     )
 }
+
 export async function getServerSideProps(context) {
-    const _id = context.params.id;
-    await mongodb.dbConnect();
-    const place = await Place.findById({ _id }).lean();
+    const id = context.params.id;
+    const { origin } = absoluteUrl(context.req)
+    const { data } = await axios.get(`${origin}/api/places/${id}`)
+
     return {
         props: {
-            place: JSON.parse(JSON.stringify(place))
+            place: JSON.parse(JSON.stringify(data.place))
         }
     }
 }

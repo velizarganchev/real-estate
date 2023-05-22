@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 
-import { allPlacesReducer } from './placeReducers'
+import { allPlacesReducer, placeDetailsReducer } from './placeReducers'
 
 const reducer = combineReducers({
-    allPlaces: allPlacesReducer
+    allPlaces: allPlacesReducer,
+    placeDetails: placeDetailsReducer
 })
 
 export default reducer

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function about() {
+export default function About() {
     return (
         <section id="about" className="about section-padding">
             <div className="container">

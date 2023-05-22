@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function about() {
+export default function AboutScarpine() {
     return (
         <section id="about" className="about section-padding">
             <div className="container">

@@ -7,6 +7,8 @@ import APIFeatures from "../utils/apiFeatures";
 // Get All Places
 const allPlaces = catchAsyncErrors(async (req, res) => {
 
+    // return next(new ErrorHandler('Place not found with this ID.', 404))
+
     const resPerPage = 4;
     const placesCount = await Place.countDocuments();
 

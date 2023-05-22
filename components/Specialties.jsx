@@ -1,4 +1,4 @@
-export default function specialties() {
+export default function Specialties() {
     return (
         <section id="services" className="services section-padding">
             <div className="container">

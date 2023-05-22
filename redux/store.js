@@ -1,27 +1,24 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { HYDRATE, createWrapper } from 'next-redux-wrapper';
+import { configureStore } from '@reduxjs/toolkit'
+// Or from '@reduxjs/toolkit/query/react'
+import { setupListeners } from '@reduxjs/toolkit/query'
 
-import thunk from 'redux-thunk';
-import reducers from './reducers/reducers';
+import { userApi } from './userApiSlice'
+import { placeApi } from './placeApiSlice'
+import { bookingApi } from './bookingApiSlice'
 
+export const store = configureStore({
+  reducer: {
+    // Add the generated reducer as a specific top-level slice
+    [userApi.reducerPath]: userApi.reducer,
+    [placeApi.reducerPath]: placeApi.reducer,
+    [bookingApi.reducerPath]: bookingApi.reducer,
+  },
+  // Adding the api middleware enables caching, invalidation, polling,
+  // and other useful features of `rtk-query`.
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(userApi.middleware, placeApi.middleware, bookingApi.middleware),
+})
 
-const reducer = (state, action) => {
-    if (action.type === HYDRATE) {
-        const nextState = {
-            ...state,
-            ...action.payload
-        }
-        return nextState
-    } else {
-        return reducers(state, action)
-    }
-}
-
-const makeStore = () =>
-    configureStore({
-        reducer,
-        devTools: true,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk)
-    });
-
-export const wrapper = createWrapper(makeStore);
+// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+setupListeners(store.dispatch)
