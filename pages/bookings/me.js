@@ -3,13 +3,12 @@ import { useGetAllMyBookingsQuery } from "../../redux/bookingApiSlice"
 import Link from "next/link"
 import { Table } from "react-bootstrap"
 
-import { MDBDataTable } from 'mdbreact'
 import easyinvoice from 'easyinvoice'
 
 const MyBookings = () => {
 
   const { data: myBookings, error, isError, isLoading } = useGetAllMyBookingsQuery();
-
+ 
   const setBookings = () => {
     const data = {
       columns: [
@@ -121,30 +120,10 @@ const MyBookings = () => {
       "bottom-notice": "This is auto generated Invoice of your booking on Real Estate.",
       // Settings to customize your invoice
       "settings": {
-        "currency": "USD", // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
-        // "locale": "nl-NL", // Defaults to en-US, used for number formatting (See documentation 'Locales and Currency')        
-        // "margin-top": 25, // Defaults to '25'
-        // "margin-right": 25, // Defaults to '25'
-        // "margin-left": 25, // Defaults to '25'
-        // "margin-bottom": 25, // Defaults to '25'
-        // "format": "A4", // Defaults to A4, options: A3, A4, A5, Legal, Letter, Tabloid
-        // "height": "1000px", // allowed units: mm, cm, in, px
-        // "width": "500px", // allowed units: mm, cm, in, px
-        // "orientation": "landscape", // portrait or landscape, defaults to portrait
+        "currency": "USD", 
       },
       // Translate your invoice to your preferred language
       "translate": {
-        // "invoice": "FACTUUR",  // Default to 'INVOICE'
-        // "number": "Nummer", // Defaults to 'Number'
-        // "date": "Datum", // Default to 'Date'
-        // "due-date": "Verloopdatum", // Defaults to 'Due Date'
-        // "subtotal": "Subtotaal", // Defaults to 'Subtotal'
-        // "products": "Producten", // Defaults to 'Products'
-        // "quantity": "Aantal", // Default to 'Quantity'
-        // "price": "Prijs", // Defaults to 'Price'
-        // "product-total": "Totaal", // Defaults to 'Total'
-        // "total": "Totaal", // Defaults to 'Total'
-        // "vat": "btw" // Defaults to 'vat'
       },
     };
 
@@ -156,7 +135,7 @@ const MyBookings = () => {
   return (
     <div className='container container-fluid'>
       <h1 className='my-5'>My Bookings</h1>
-      {myBookings &&
+      {myBookings && myBookings.bookings.length !== 0 ?
         <Table responsive>
           <thead>
             <tr>
@@ -187,7 +166,8 @@ const MyBookings = () => {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Table> :
+        <div className="text-center fs-1"> No Bookings</div>
       }
     </div>
   )

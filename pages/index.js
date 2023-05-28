@@ -7,8 +7,6 @@ import Contact from '../components/Contact'
 
 import { authOptions } from './api/auth/[...nextauth]'
 import { getServerSession } from 'next-auth'
-import { useGetCurrUserQuery } from '../redux/userApiSlice'
-import { useGetAllPlacesQuery } from '../redux/placeApiSlice'
 
 import axios from 'axios'
 import absoluteUrl from 'next-absolute-url'
@@ -19,9 +17,8 @@ export default function Index({ places }) {
       <Slider />
       <div className='container'>
         <Baner />
-        <SierrahScarpine />
-        <Specialties />
         <PlacesList places={places} />
+        <Specialties />
         <Contact />
       </div>
     </div>

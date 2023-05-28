@@ -40,6 +40,9 @@ export default function ForgotPassword() {
         <div id="contact" className="contact section-padding">
             <div className="container">
                 <div className="row">
+                    <div className="mb-3">
+                        <Link className="text-dark" href={"/auth/login"}>← back to Login</Link>
+                    </div>
                     <div className="col-md-12">
                         <div className="section-header text-center pb-5">
                             <h2>Forgot Password</h2>

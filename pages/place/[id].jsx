@@ -5,9 +5,12 @@ import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
 
 import BookingWidget from "../../components/BookingWidget";
+import ListReviews from "../../components/review/ListReviews";
 
 import absoluteUrl from "next-absolute-url";
 import axios from "axios";
+import NewReview from "../../components/review/NewReview";
+import ModalTest from "../../components/modalTest"
 
 export default function PlacePage({ place }) {
 
@@ -50,6 +53,12 @@ export default function PlacePage({ place }) {
                 <div className="position-relative">
                     <h1>{place.name}</h1>
                     <h5>{place.address}</h5>
+                    <div className="ratings mt-auto mb-3">
+                        <div className="rating-outer">
+                            <div className="rating-inner" style={{ width: `${(place.ratings / 5) * 100}%` }}></div>
+                        </div>
+                        <span id="no_of_reviews">({place.numOfReviews} Reviews)</span>
+                    </div>
                     {/* <div className="row row-cols-2 mt-2">
                     <Image className="rounded-3 img-fluid" src={place.images[1]} alt={place.title} width={600} height={600}/>
                 </div> */}
@@ -101,7 +110,16 @@ export default function PlacePage({ place }) {
                             </li>
                         </ul>
                     </div>
+
                     <BookingWidget place={place} />
+
+                    <NewReview />
+
+                    {place.reviews && place.reviews.length > 0 ?
+                        <ListReviews reviews={place.reviews} />
+                        :
+                        <p><b>No Reviews on this place</b></p>
+                    }
                 </div>
             </div>
         </div>

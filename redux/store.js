@@ -5,6 +5,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { userApi } from './userApiSlice'
 import { placeApi } from './placeApiSlice'
 import { bookingApi } from './bookingApiSlice'
+import { reviewApi } from './reviewApiSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,11 +13,13 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [placeApi.reducerPath]: placeApi.reducer,
     [bookingApi.reducerPath]: bookingApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(userApi.middleware, placeApi.middleware, bookingApi.middleware),
+    getDefaultMiddleware()
+      .concat(userApi.middleware, placeApi.middleware, bookingApi.middleware, reviewApi.middleware),
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

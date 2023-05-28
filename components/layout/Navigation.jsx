@@ -33,13 +33,13 @@ export default function Navigation() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Link className='navbar-brand' href="/">Sierrah Scarpine</Link>
+        <Link className='navbar-brand' href="/"><Image width={60} height={60} src={'/SierrahScarpineLogo.png'} alt='Logo' /></Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             {/* <Link className='nav-link' href="/sierrahScarpine">Sierrah Scarpin</Link> */}
             {user ?
-              <NavDropdown title={user ? <Image className="rounded-circle" width={26} height={26} alt='ass' src={user.avatar.url}></Image> : ''} id="basic-nav-dropdown">
+              <NavDropdown title={user ? <Image className="rounded-circle" width={26} height={26} alt='avatar' src={user.avatar.url}></Image> : ''} id="basic-nav-dropdown">
                 <Link className='dropdown-item' href="/me/profile">Profile</Link>
                 <Link className='dropdown-item' href="/bookings/me">My Bookings</Link>
                 <Link className='dropdown-item' href="/  " onClick={() => signOut()}>Logout</Link>

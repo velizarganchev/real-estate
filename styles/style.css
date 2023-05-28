@@ -112,12 +112,6 @@ a {
 }
 
 .wrapper form .btn,
-.booking-btn,
-.update-btn,
-#review_btn,
-.new-room-btn,
-#forgot_password_button,
-#new_password_button,
 .search-form .btn {
   background-color: #e61e4d;
   border-color: #e61e4d;
@@ -152,7 +146,69 @@ a {
   width: 100%;
 }
 
+/* Reviews */
+.review_user {
+  font-size: 0.8rem;
+  color: grey;
+}
 
+.rating {
+  margin-top: 10rem;
+}
+
+.stars {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.star {
+  display: inline;
+  list-style: none;
+  font-size: 3rem;
+  padding-left: 0.9rem;
+  color: #e3e3e3;
+}
+
+.star:first-child {
+  padding-left: 0;
+}
+
+.black {
+  color: #000;
+}
+
+.light-black {
+  color: #4e4c4d;
+}
+
+/* Ratings */
+
+.rating-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+  color: #000;
+}
+
+.rating-outer::before {
+  content: '\f006 \f006 \f006 \f006 \f006';
+}
+
+.rating-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.rating-inner::before {
+  content: '\f005 \f005 \f005 \f005 \f005';
+  color: #000;
+}
 
 /* Avatar */
 .avatar {
