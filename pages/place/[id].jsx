@@ -10,7 +10,7 @@ import ListReviews from "../../components/review/ListReviews";
 import absoluteUrl from "next-absolute-url";
 import axios from "axios";
 import NewReview from "../../components/review/NewReview";
-import ModalTest from "../../components/modalTest"
+import PlaceFeatures from "../../components/PlaceFeatures";
 
 export default function PlacePage({ place }) {
 
@@ -32,9 +32,9 @@ export default function PlacePage({ place }) {
                 <Container className="bg-light">
                     <Row className="g-1">
                         {place.images.map((i) => (
-                            <Col key={i.toString()} xs={12} md={6} xl={4} >
+                            <Col key={i.url} xs={12} md={6} xl={4} >
                                 <Image
-                                    className="img-fluid h-100" src={i} width={500} height={500} alt={place.name}
+                                    className="img-fluid h-100" src={i.url} width={500} height={500} alt={place.name}
                                 />
                             </Col>
                         ))}
@@ -48,7 +48,6 @@ export default function PlacePage({ place }) {
             <div className="mb-3">
                 <Link className="text-dark" href={"/"}>← back to Home</Link>
             </div>
-
             <div>
                 <div className="position-relative">
                     <h1>{place.name}</h1>
@@ -59,17 +58,14 @@ export default function PlacePage({ place }) {
                         </div>
                         <span id="no_of_reviews">({place.numOfReviews} Reviews)</span>
                     </div>
-                    {/* <div className="row row-cols-2 mt-2">
-                    <Image className="rounded-3 img-fluid" src={place.images[1]} alt={place.title} width={600} height={600}/>
-                </div> */}
                     <Row className="g-sm-1">
                         <Col sm={7}>
-                            <Image className="img-fluid h-100 p-1" src={place.images[1]} alt={place.name} width={800} height={600} />
+                            <Image className="img-fluid h-100 p-1" src={place.images[0].url} alt={place.name} width={800} height={600} />
                         </Col>
                         <Col sm={5} >
                             <div className="d-block">
-                                <Image className="img-fluid p-1" src={place.images[0]} width={500} height={600} alt={place.name} />
-                                <Image className="img-fluid p-1" src={place.images[2]} width={500} height={600} alt={place.name} />
+                                <Image className="img-fluid p-1" src={place.images[1].url} width={500} height={600} alt={place.name} />
+                                <Image className="img-fluid p-1" src={place.images[2].url} width={500} height={600} alt={place.name} />
                             </div>
 
                         </Col>
@@ -93,12 +89,7 @@ export default function PlacePage({ place }) {
                                 <p>{place.description}</p>
                             </li>
                             <li className="list-group-item">
-                                <h6 className="mb-4">This is what this accommodation offers you</h6>
-                                <ul className="d-sm-flex list-unstyled">
-                                    {place.amenities.map((a) => (
-                                        <li className="px-2" key={a.text}>{a.text} - <i className={a.icon}></i></li>
-                                    ))}
-                                </ul>
+                                <PlaceFeatures place={place} />
                             </li>
                             <li className="list-group-item">
                                 <h6>What you should know</h6>
@@ -110,11 +101,8 @@ export default function PlacePage({ place }) {
                             </li>
                         </ul>
                     </div>
-
                     <BookingWidget place={place} />
-
                     <NewReview />
-
                     {place.reviews && place.reviews.length > 0 ?
                         <ListReviews reviews={place.reviews} />
                         :

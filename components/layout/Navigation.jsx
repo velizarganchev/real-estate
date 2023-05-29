@@ -31,7 +31,7 @@ export default function Navigation() {
   }, [status]);
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar collapseOnSelect  bg="light" expand="lg">
       <Container>
         <Link className='navbar-brand' href="/"><Image width={60} height={60} src={'/SierrahScarpineLogo.png'} alt='Logo' /></Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -40,6 +40,13 @@ export default function Navigation() {
             {/* <Link className='nav-link' href="/sierrahScarpine">Sierrah Scarpin</Link> */}
             {user ?
               <NavDropdown title={user ? <Image className="rounded-circle" width={26} height={26} alt='avatar' src={user.avatar.url}></Image> : ''} id="basic-nav-dropdown">
+                {user.role === 'admin' &&
+                  <>
+                    <Link className='dropdown-item' href="/admin/places">All Places</Link>
+
+                    <hr />
+                  </>
+                }
                 <Link className='dropdown-item' href="/me/profile">Profile</Link>
                 <Link className='dropdown-item' href="/bookings/me">My Bookings</Link>
                 <Link className='dropdown-item' href="/  " onClick={() => signOut()}>Logout</Link>
@@ -47,7 +54,7 @@ export default function Navigation() {
               <Link className='nav-link' href="/auth/login">Login</Link>
             }
             {/* <Link className='nav-link' href="/contact">Contact Us</Link> */}
-            <Button variant="dark" size='m'>Book Now</Button>
+            <Link className='nav-link border border-dark rounded-pill text-light bg-dark bg-gradient' id='book_now_btn' href="/me/profile">Book Now</Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

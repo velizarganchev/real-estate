@@ -8,7 +8,10 @@ export const placeApi = createApi({
         getAllPlaces: builder.query({
             query: () => "places",
         }),
+        getPlace: builder.query({
+            query: (id) => `places/${id}`,
+        }),
     }),
 });
 
-export const { useGetAllPlacesQuery } = placeApi;
+export const { useGetAllPlacesQuery, useGetPlaceQuery } = placeApi;

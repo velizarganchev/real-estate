@@ -9,64 +9,6 @@ const MyBookings = () => {
 
   const { data: myBookings, error, isError, isLoading } = useGetAllMyBookingsQuery();
  
-  const setBookings = () => {
-    const data = {
-      columns: [
-        {
-          label: 'Booking ID',
-          field: 'id',
-          sort: 'asc'
-        },
-        {
-          label: 'Check In',
-          field: 'checkIn',
-          sort: 'asc'
-        },
-        {
-          label: 'Check Out',
-          field: 'checkOut',
-          sort: 'asc'
-        },
-        {
-          label: 'Amount Paid',
-          field: 'amount',
-          sort: 'asc'
-        },
-        {
-          label: 'Actions',
-          field: 'actions',
-          sort: 'asc'
-        }
-
-      ],
-      rows: []
-    }
-    if (myBookings) {
-
-      myBookings.bookings && myBookings.bookings.forEach(booking => {
-        data.rows.push({
-          id: booking._id,
-          checkIn: new Date(booking.checkInDate).toLocaleString('en-US'),
-          checkOut: new Date(booking.checkOutDate).toLocaleString('en-US'),
-          amount: `$${booking.amountPaid}`,
-          actions:
-            <>
-              <Link className="btn btn-primary" href={`/bookings/${booking._id}`}>
-                <i className="fa fa-eye"></i>
-              </Link>
-              <button className="btn btn-success mx-2" onClick={() => downloadInvoice(booking)}>
-                <i className="fa fa-download"></i>
-              </button>
-
-            </>
-        })
-      })
-
-      return data;
-
-    }
-  }
-
   const downloadInvoice = async (booking) => {
 
 

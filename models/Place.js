@@ -1,4 +1,4 @@
-const mongoose = require( "mongoose")
+const mongoose = require("mongoose")
 
 const PlaceShema = new mongoose.Schema({
     name: {
@@ -37,6 +37,46 @@ const PlaceShema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    internet: {
+        type: Boolean,
+        default: false,
+    },
+    airConditioned: {
+        type: Boolean,
+        default: false,
+    },
+    petsAllowed: {
+        type: Boolean,
+        default: false,
+    },
+    parking: {
+        type: Boolean,
+        default: false,
+    },
+    entertainment: {
+        type: Boolean,
+        default: false,
+    },
+    kitchen: {
+        type: Boolean,
+        default: false,
+    },
+    refrigerator: {
+        type: Boolean,
+        default: false,
+    },
+    washer: {
+        type: Boolean,
+        default: false,
+    },
+    dryer: {
+        type: Boolean,
+        default: false,
+    },
+    selfCheckIn: {
+        type: Boolean,
+        default: false,
+    },
     ratings: {
         type: Number,
         default: 0
@@ -48,25 +88,18 @@ const PlaceShema = new mongoose.Schema({
     extraInfo: {
         type: String,
     },
-    amenities: {
-        type: [
-            {
-                text: {
-                    type: String,
-                    required: true
-                },
-                icon: {
-                    type: String,
-                    required: true
-                }
+    images: [
+        {
+            public_id: {
+                type: String,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
             }
-        ],
-        required: true,
-    },
-    images: {
-        type: [],
-        required: true,
-    },
+        }
+    ],
     reviews: [
         {
             user: {

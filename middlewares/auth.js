@@ -8,7 +8,7 @@ import ErrorHandler from "../utils/errorHandler";
 const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
 
     const session = await getServerSession(req, res, authOptions)
-    
+
     if (!session) {
         return next(new ErrorHandler('Login first to access this resource', 401));
     }
@@ -21,8 +21,8 @@ const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
 // Handling user roles
 const authorizeRoles = (...roles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.user._doc.role)) {
-            return next(new ErrorHandler(`Role (${req.user._doc.role}) is not allowed to access this resource.`, 403))
+        if (!roles.includes(req.user.role)) {
+            return next(new ErrorHandler(`Role (${req.user.role}) is not allowed to access this resource.`, 403))
         }
 
         next()

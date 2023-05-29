@@ -12,7 +12,7 @@ export default function PlacesList({ places }) {
                     <Col key={place._id}>
                         <Card className="h-100">
                             <Link href={`/place/${place._id}`}>
-                                <Card.Img variant="top" src={place.images[0]} />
+                                <Card.Img variant="top" src={place.images[0].url} />
                             </Link>
                             <Card.Body>
                                 <Card.Title>{place.name}</Card.Title>

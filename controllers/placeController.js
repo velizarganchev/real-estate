@@ -1,5 +1,6 @@
 import Place from "../models/Place";
 import Booking from "../models/Booking"
+import cloudinary from "cloudinary";
 
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
@@ -33,8 +34,27 @@ const allPlaces = catchAsyncErrors(async (req, res) => {
 })
 
 // Create new place => /api/places
-
 const newPlace = catchAsyncErrors(async (req, res) => {
+
+    const images = req.body.images;
+
+    let imagesLinks = [];
+
+    for (let i = 0; i < images.length; i++) {
+
+        const result = await cloudinary.v2.uploader.upload(images[i], {
+            folder: 'realestate/places',
+        });
+
+        imagesLinks.push({
+            public_id: result.public_id,
+            url: result.secure_url
+        })
+
+    }
+
+    req.body.images = imagesLinks;
+    req.body.user = req.user._id
 
     const place = await Place.create(req.body)
 
@@ -69,6 +89,33 @@ const updatePlace = catchAsyncErrors(async (req, res) => {
         return next(new ErrorHandler('Place not found with this ID.', 404))
     }
 
+    if (req.body.images) {
+
+        // Delete images associated with the place
+        for (let i = 0; i < place.images.length; i++) {
+            await cloudinary.v2.uploader.destroy(place.images[i].public_id)
+        }
+
+        let imagesLinks = []
+        const images = req.body.images;
+
+        for (let i = 0; i < images.length; i++) {
+
+            const result = await cloudinary.v2.uploader.upload(images[i], {
+                folder: 'realestate/places',
+            });
+
+            imagesLinks.push({
+                public_id: result.public_id,
+                url: result.secure_url
+            })
+
+        }
+
+        req.body.images = imagesLinks;
+
+    }
+
     place = await Place.findByIdAndUpdate(req.query.id, req.body, {
         new: true,
         runValidators: true,
@@ -90,6 +137,12 @@ const deletePlace = catchAsyncErrors(async (req, res) => {
     if (!place) {
         return next(new ErrorHandler('Place not found with this ID.', 404))
     }
+
+    // Delete images associated with the room
+    for (let i = 0; i < place.images.length; i++) {
+        await cloudinary.v2.uploader.destroy(place.images[i].public_id)
+    }
+
 
     await place.remove();
 

@@ -111,16 +111,16 @@ a {
   padding: 2.5rem 3rem;
 }
 
-.wrapper form .btn,
+/* .wrapper form .btn,
 .search-form .btn {
   background-color: #e61e4d;
   border-color: #e61e4d;
   color: white;
   margin-top: 2.5rem;
   font-weight: bold;
-}
+} */
 
-.review-btn {
+/* .review-btn {
   background-color: #e61e4d;
   border-color: #e61e4d;
   margin-top: 2rem;
@@ -135,7 +135,7 @@ a {
 .wrapper form a {
   font-size: 0.9rem;
   color: grey;
-}
+} */
 
 .react-datepicker {
   width: 100%;

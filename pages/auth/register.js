@@ -39,7 +39,7 @@ const Register = () => {
             setLoading(false);
 
             if (data.success) {
-                router.push('/auth/login')
+                router.push('/auth/login') 
             }
 
         } catch (error) {

@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-
 import { useRouter } from 'next/router';
 
 import { useCheckAvailabilityQuery } from '../../redux/reviewApiSlice';
@@ -16,18 +13,12 @@ export default function NewReview() {
     const [comment, setComment] = useState('');
     const [show, setShow] = useState(false);
 
-    const handleClose = () => {
-        setShow(false);
-    }
-
     const router = useRouter();
     const { id } = router.query;
 
-    const { data: isReviewAvailable, error, isLoading } = useCheckAvailabilityQuery(id)
-
+    const { data: reviewAvailable, error, isLoading } = useCheckAvailabilityQuery(id)
 
     const submitHandler = async () => {
-
         try {
             const reviewData = {
                 rating, comment, placeId: id
@@ -42,7 +33,6 @@ export default function NewReview() {
             const { data } = await axios.put('/api/reviews', reviewData, config)
 
             if (data.success) {
-                setShow(false)
                 toast.success('Review is posted.')
             }
 
@@ -53,10 +43,7 @@ export default function NewReview() {
 
     function setUserRatings() {
 
-        setShow(true)
-
         const stars = document.querySelectorAll('.star');
-        console.log(stars)
         stars.forEach((star, index) => {
             star.starValue = index + 1;
 
@@ -91,15 +78,14 @@ export default function NewReview() {
                 if (e.type === 'mouseout') {
                     star.classList.remove('light-black')
                 }
-
             })
         }
-
     }
 
     return (
         <>
-            {isReviewAvailable &&
+            {isLoading ? '' :
+                reviewAvailable.isReviewAvailable &&
                 <button onClick={setUserRatings} type="button" className='btn btn-outline-dark btn-lg btn-block m-2' data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Submit Your Review
                 </button>
