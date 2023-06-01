@@ -14,11 +14,15 @@ export const bookingApi = createApi({
         getBookingDetails: builder.query({
             query: (id) => `bookings/${id}`,
         }),
+        getAllBookings: builder.query({
+            query: () => `admin/bookings`,
+        }),
     }),
 });
 
 export const {
     useGetAllBookedDatesQuery,
     useGetAllMyBookingsQuery,
-    useGetBookingDetailsQuery
+    useGetBookingDetailsQuery,
+    useGetAllBookingsQuery
 } = bookingApi;

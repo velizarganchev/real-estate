@@ -14,9 +14,14 @@ export default function NewReview() {
     const [show, setShow] = useState(false);
 
     const router = useRouter();
+
+    let isAvailable = false;
     const { id } = router.query;
 
-    const { data: reviewAvailable, error, isLoading } = useCheckAvailabilityQuery(id)
+    const { data } = useCheckAvailabilityQuery()
+    if (data) {
+        isAvailable = data.isReviewAvailable
+    }
 
     const submitHandler = async () => {
         try {
@@ -84,8 +89,7 @@ export default function NewReview() {
 
     return (
         <>
-            {isLoading ? '' :
-                reviewAvailable.isReviewAvailable &&
+            {isAvailable &&
                 <button onClick={setUserRatings} type="button" className='btn btn-outline-dark btn-lg btn-block m-2' data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Submit Your Review
                 </button>

@@ -213,7 +213,7 @@ const updateUser = catchAsyncErrors(async (req, res) => {
         email: req.body.email,
         role: req.body.role,
     }
-
+    
     const user = await User.findByIdAndUpdate(req.query.id, newUserData, {
         new: true,
         runValidators: true,

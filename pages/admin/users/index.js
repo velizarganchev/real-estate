@@ -1,50 +1,31 @@
-// import { useGetAllMyBookingsQuery } from "../../redux/bookingApiSlice"
-import { useState, useEffect } from "react"
-
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
+
+import { useGetAllUsersQuery } from "../../../redux/userApiSlice"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
 
 import Link from "next/link"
 import { Table } from "react-bootstrap"
 
 import axios from "axios"
-
 import { toast } from 'react-toastify'
 import Loader from "../../../components/layout/Loader"
 
-import { useRouter } from "next/router"
+const AllUsers = () => {
 
-const AllPlaces = () => {
-
-    const [places, setPlaces] = useState()
     const router = useRouter()
 
-    async function LoadPlaces() {
-        try {
-            return await axios.get('/api/admin/places')
-        } catch (error) {
-            toast.error(error)
+    const { data: allUsers, error, isLoading } = useGetAllUsersQuery();
 
-        }
-    }
-
-    useEffect(() => {
-        LoadPlaces().then(function (result) {
-            const data = result.data
-            if (data.success) {
-                setPlaces(data.places)
-            }
-        })
-    }, []);
-
-
-    const deletePlaceHandler = async (id) => {
+    const deleteUserHandler = async (userId) => {
         try {
             try {
+                const { data } = await axios.delete(`/api/admin/users/${userId}`)
 
-                const { data } = await axios.delete(`/api/places/${id}`)
                 if (data.success) {
-                    toast.success(data.message)
+                    router.push('/admin/users')
+                    toast.success(`User ${data.user.name} is deleted.`)
                 }
 
             } catch (error) {
@@ -59,38 +40,34 @@ const AllPlaces = () => {
     return (
         <div className='container container-fluid'>
             {
-                !places ? <Loader />
-                    :
+                isLoading ? <Loader /> :
                     <>
-                        <h1 className='my-5'>All Places
-                            <Link href='/admin/places/new' className="btn btn-outline-dark float-end">
-                                Create Place
-                            </Link>
-                        </h1>
-
-                        {places && places.length !== 0 ?
+                        <h1 className='text-center my-5'>All Users</h1>
+                        {allUsers && allUsers.users.length !== 0 ?
                             <Table responsive>
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th >Place ID</th>
+                                        <th >User ID</th>
                                         <th >Name</th>
-                                        <th >Price / Night</th>
+                                        <th >Email</th>
+                                        <th >Role</th>
                                         <th >Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {places.map((place, index) => (
+                                    {allUsers.users.map((user, index) => (
                                         <tr key={index}>
                                             <td>{index}</td>
-                                            <td>{place._id}</td>
-                                            <td>{place.name}</td>
-                                            <td>{place.pricePerNight}</td>
+                                            <td>{user._id}</td>
+                                            <td>{user.name}</td>
+                                            <td>{user.email}</td>
+                                            <td>{user.role}</td>
                                             <td>
-                                                <Link className="btn btn-primary" href={`/admin/places/${place._id}`}>
+                                                <Link className="btn btn-primary" href={`/admin/users/${user._id}`}>
                                                     <i className="fa fa-pencil"></i>
                                                 </Link>
-                                                <button className="btn btn-danger mx-2" onClick={() => deletePlaceHandler(place._id)}>
+                                                <button className="btn btn-danger mx-2" onClick={() => deleteUserHandler(user._id)}>
                                                     <i className="fa fa-trash"></i>
                                                 </button>
                                             </td>
@@ -102,7 +79,9 @@ const AllPlaces = () => {
                         }
                     </>
             }
-        </div>
+        </div >
+
+
     )
 }
 
@@ -124,5 +103,4 @@ export async function getServerSideProps({ req, res }) {
     }
 
 }
-
-export default AllPlaces
+export default AllUsers

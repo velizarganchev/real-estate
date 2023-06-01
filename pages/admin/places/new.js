@@ -7,8 +7,6 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-import ButtonLoader from '../../../components/layout/ButtonLoader';
-
 const NewPlace = () => {
 
     const [name, setName] = useState('')

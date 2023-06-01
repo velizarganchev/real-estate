@@ -31,7 +31,7 @@ export default function Navigation() {
   }, [status]);
 
   return (
-    <Navbar collapseOnSelect  bg="light" expand="lg">
+    <Navbar collapseOnSelect bg="light" expand="lg">
       <Container>
         <Link className='navbar-brand' href="/"><Image width={60} height={60} src={'/SierrahScarpineLogo.png'} alt='Logo' /></Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -43,7 +43,8 @@ export default function Navigation() {
                 {user.role === 'admin' &&
                   <>
                     <Link className='dropdown-item' href="/admin/places">All Places</Link>
-
+                    <Link className='dropdown-item' href="/admin/bookings">All Bookings</Link>
+                    <Link className='dropdown-item' href="/admin/users">All Users</Link>
                     <hr />
                   </>
                 }

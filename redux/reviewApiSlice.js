@@ -9,7 +9,7 @@ export const reviewApi = createApi({
             query: () => "reviews",
         }),
         checkAvailability: builder.query({
-            query: (id) => `reviews/check_review_availability?placeId=${id}`,
+            query: () => `reviews/check_review_availability`,
         }),
     }),
 });

@@ -4,11 +4,12 @@ import Link from "next/link"
 import { Table } from "react-bootstrap"
 
 import easyinvoice from 'easyinvoice'
+import Loader from "../../components/layout/Loader"
 
 const MyBookings = () => {
 
-  const { data: myBookings, error, isError, isLoading } = useGetAllMyBookingsQuery();
- 
+  const { data: myBookings, error, isLoading } = useGetAllMyBookingsQuery();
+
   const downloadInvoice = async (booking) => {
 
 
@@ -36,7 +37,7 @@ const MyBookings = () => {
       "client": {
         "company": `${booking.user.name}`,
         "address": `${booking.user.email}`,
-        // "zip": "",
+        "zip": "",
         "city": `Check In: ${new Date(booking.checkInDate).toLocaleString('en-US')}`,
         "country": `Check Out: ${new Date(booking.checkOutDate).toLocaleString('en-US')}`
       },
@@ -62,7 +63,7 @@ const MyBookings = () => {
       "bottom-notice": "This is auto generated Invoice of your booking on Real Estate.",
       // Settings to customize your invoice
       "settings": {
-        "currency": "USD", 
+        "currency": "USD",
       },
       // Translate your invoice to your preferred language
       "translate": {
@@ -76,40 +77,47 @@ const MyBookings = () => {
 
   return (
     <div className='container container-fluid'>
-      <h1 className='my-5'>My Bookings</h1>
-      {myBookings && myBookings.bookings.length !== 0 ?
-        <Table responsive>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th >Booking ID</th>
-              <th >Check In</th>
-              <th >Check Out</th>
-              <th >Amount Paid</th>
-              <th >Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myBookings.bookings.map((booking, index) => (
-              <tr key={index}>
-                <td>{index}</td>
-                <td>{booking._id}</td>
-                <td>{new Date(booking.checkInDate).toLocaleString('en-US')}</td>
-                <td>{new Date(booking.checkOutDate).toLocaleString('en-US')}</td>
-                <td>${booking.amountPaid}</td>
-                <td>
-                  <Link className="btn btn-primary" href={`/bookings/${booking._id}`}>
-                    <i className="fa fa-eye"></i>
-                  </Link>
-                  <button className="btn btn-success mx-2" onClick={() => downloadInvoice(booking)}>
-                    <i className="fa fa-download"></i>
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table> :
-        <div className="text-center fs-1"> No Bookings</div>
+      {
+        isLoading ?
+          <Loader />
+          :
+          <>
+            <h1 className='my-5'>My Bookings</h1>
+            {myBookings && myBookings.bookings.length !== 0 ?
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th >Booking ID</th>
+                    <th >Check In</th>
+                    <th >Check Out</th>
+                    <th >Amount Paid</th>
+                    <th >Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {myBookings.bookings.map((booking, index) => (
+                    <tr key={index}>
+                      <td>{index}</td>
+                      <td>{booking._id}</td>
+                      <td>{new Date(booking.checkInDate).toLocaleString('en-US')}</td>
+                      <td>{new Date(booking.checkOutDate).toLocaleString('en-US')}</td>
+                      <td>${booking.amountPaid}</td>
+                      <td>
+                        <Link className="btn btn-primary" href={`/bookings/${booking._id}`}>
+                          <i className="fa fa-eye"></i>
+                        </Link>
+                        <button className="btn btn-success mx-2" onClick={() => downloadInvoice(booking)}>
+                          <i className="fa fa-download"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table> :
+              <div className="text-center fs-1"> No Bookings</div>
+            }
+          </>
       }
     </div>
   )

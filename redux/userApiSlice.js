@@ -8,7 +8,17 @@ export const userApi = createApi({
         getCurrUser: builder.query({
             query: () => "me",
         }),
+        getAllUsers: builder.query({
+            query: () => `/admin/users`,
+        }),
+        getUserDetails: builder.query({
+            query: (id) => `/admin/users/${id}`,
+        }),
     }),
 });
 
-export const {useGetCurrUserQuery} = userApi
+export const {
+    useGetCurrUserQuery,
+    useGetAllUsersQuery,
+    useGetUserDetailsQuery
+} = userApi
