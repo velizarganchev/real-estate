@@ -117,7 +117,7 @@ const AllBookings = () => {
                     <Loader />
                     :
                     <>
-                        <h1 className='text-center my-5'>My Bookings</h1>
+                        <h1 className='text-center my-5'>All Bookings</h1>
                         {allBookings && allBookings.bookings.length !== 0 ?
                             <Table responsive>
                                 <thead>

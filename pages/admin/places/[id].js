@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { useGetPlaceQuery } from '../../../redux/placeApiSlice'
+import { useGetPlaceQuery, useUpdatePlaceMutation } from '../../../redux/placeApiSlice'
 
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -40,7 +40,9 @@ const UpdatePlace = () => {
 
     const { id } = router.query;
 
-    const { data, error, isLoading } = useGetPlaceQuery(id);
+    const { data, error, isLoading: isPlaceLoading } = useGetPlaceQuery(id);
+    const [updatePlace, { isLoading }] = useUpdatePlaceMutation();
+
 
     useEffect(() => {
 
@@ -71,58 +73,39 @@ const UpdatePlace = () => {
 
     }, [error, data])
 
-
-    async function Update(id, placeData, config) {
-        try {
-            return await axios.put(`/api/places/${id}`, placeData, config)
-        } catch (error) {
-            toast.error(error)
-
-        }
-    }
-
     const submitHandler = (e) => {
         e.preventDefault()
-        try {
 
-            const placeData = {
-                name,
-                pricePerNight: price,
-                description,
-                address,
-                checkIn: Number(checkIn),
-                checkOut: Number(checkOut),
-                guestCapacity: Number(guestCapacity),
-                numOfBeds: Number(numOfBeds),
-                internet,
-                airConditioned,
-                petsAllowed,
-                parking,
-                entertainment,
-                kitchen,
-                refrigerator,
-                washer,
-                dryer,
-                selfCheckIn,
-            }
-
-            if (images.length !== 0) placeData.images = images
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            Update(id, placeData, config).then(function (success) {
-                if (success) {
-                    router.push('/admin/places')
-                }
-            })
-
-        } catch (error) {
-            toast.error(error)
+        const placeData = {
+            id,
+            name,
+            pricePerNight: price,
+            description,
+            address,
+            checkIn: Number(checkIn),
+            checkOut: Number(checkOut),
+            guestCapacity: Number(guestCapacity),
+            numOfBeds: Number(numOfBeds),
+            internet,
+            airConditioned,
+            petsAllowed,
+            parking,
+            entertainment,
+            kitchen,
+            refrigerator,
+            washer,
+            dryer,
+            selfCheckIn,
         }
+
+        if (images.length !== 0) placeData.images = images
+
+        updatePlace(placeData).then(function (res) {
+            console.log(res);
+            if (res.data.success) {
+                router.push('/admin/places')
+            }
+        })
     }
 
     const onChange = (e) => {
@@ -151,7 +134,7 @@ const UpdatePlace = () => {
 
         <div className="container container-fluid">
             {
-                isLoading ?
+                isPlaceLoading ?
                     <Loader />
                     :
                     <div className="row wrapper">
@@ -427,18 +410,19 @@ const UpdatePlace = () => {
                                 <button
                                     type="submit"
                                     className="btn btn-outline-dark btn-lg btn-block mt-3"
-                                // disabled={loading ? true : false}
+                                    disabled={isLoading ? true : false}
                                 >
-                                    {/* {loading ? <ButtonLoader /> : 'CREATE'} */}
-                                    Update
+                                    {isLoading ?
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                        : 'UPDATE'}
                                 </button>
                             </form>
                         </div>
                     </div>
             }
         </div >
-
-
     )
 }
 

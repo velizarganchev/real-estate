@@ -18,11 +18,12 @@ export default function NewReview() {
     let isAvailable = false;
     const { id } = router.query;
 
-    const { data } = useCheckAvailabilityQuery()
+    const { data } = useCheckAvailabilityQuery(id)
+
     if (data) {
         isAvailable = data.isReviewAvailable
     }
-
+    
     const submitHandler = async () => {
         try {
             const reviewData = {

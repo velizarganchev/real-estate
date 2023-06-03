@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import axios from 'axios';
+import { useCreatePlaceMutation } from '../../../redux/placeApiSlice'
 import { toast } from 'react-toastify';
 
 const NewPlace = () => {
@@ -33,58 +33,40 @@ const NewPlace = () => {
 
     const router = useRouter()
 
-    async function Create(placeData, config) {
-        try {
-            return await axios.post('/api/places', placeData, config)
-        } catch (error) {
-            toast.error(error)
-
-        }
-    }
+    const [createPlace, { isLoading, isFetching }] = useCreatePlaceMutation();
 
     const submitHandler = (e) => {
         e.preventDefault()
-        try {
 
-            const placeData = {
-                name,
-                pricePerNight: price,
-                description,
-                address,
-                checkIn: Number(checkIn),
-                checkOut: Number(checkOut),
-                guestCapacity: Number(guestCapacity),
-                numOfBeds: Number(numOfBeds),
-                internet,
-                airConditioned,
-                petsAllowed,
-                parking,
-                entertainment,
-                kitchen,
-                refrigerator,
-                washer,
-                dryer,
-                selfCheckIn,
-                images
-            }
-
-            if (images.length === 0) return toast.error('Please upload images.')
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-            console.log(placeData);
-            Create(placeData, config).then(function (success) {
-                if (success) {
-                    router.push('/admin/places')
-                }
-            })
-
-        } catch (error) {
-            toast.error(error)
+        const placeData = {
+            name,
+            pricePerNight: price,
+            description,
+            address,
+            checkIn: Number(checkIn),
+            checkOut: Number(checkOut),
+            guestCapacity: Number(guestCapacity),
+            numOfBeds: Number(numOfBeds),
+            internet,
+            airConditioned,
+            petsAllowed,
+            parking,
+            entertainment,
+            kitchen,
+            refrigerator,
+            washer,
+            dryer,
+            selfCheckIn,
+            images
         }
+
+        if (images.length === 0) return toast.error('Please upload images.')
+
+        createPlace(placeData).then(function (res) {
+            if (res.data.success) {
+                router.push('/admin/places')
+            }
+        })
     }
 
     const onChange = (e) => {
@@ -371,10 +353,13 @@ const NewPlace = () => {
                         <button
                             type="submit"
                             className="btn btn-outline-dark btn-lg btn-block mt-3"
-                        // disabled={loading ? true : false}
+                            disabled={isLoading ? true : false}
                         >
-                            {/* {loading ? <ButtonLoader /> : 'CREATE'} */}
-                            Create
+                            {isLoading ?
+                                <div className="spinner-border" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                                : 'CREATE'}
                         </button>
                     </form>
                 </div>

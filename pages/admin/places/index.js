@@ -1,65 +1,34 @@
-// import { useGetAllMyBookingsQuery } from "../../redux/bookingApiSlice"
-import { useState, useEffect } from "react"
-
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
 import Link from "next/link"
 import { Table } from "react-bootstrap"
 
-import axios from "axios"
+import { useGetAllPlacesQuery, useDeletePlaceMutation } from "../../../redux/placeApiSlice"
 
-import { toast } from 'react-toastify'
 import Loader from "../../../components/layout/Loader"
-
-import { useRouter } from "next/router"
 
 const AllPlaces = () => {
 
-    const [places, setPlaces] = useState()
-    const router = useRouter()
+    const {
+        data,
+        isLoading: isLoadingPlaces,
+        isFetching,
+        isError,
+        error,
+    } = useGetAllPlacesQuery();
 
-    async function LoadPlaces() {
-        try {
-            return await axios.get('/api/admin/places')
-        } catch (error) {
-            toast.error(error)
-
-        }
-    }
-
-    useEffect(() => {
-        LoadPlaces().then(function (result) {
-            const data = result.data
-            if (data.success) {
-                setPlaces(data.places)
-            }
-        })
-    }, []);
+    const [deletePlace, { isLoading }] = useDeletePlaceMutation();
 
 
     const deletePlaceHandler = async (id) => {
-        try {
-            try {
-
-                const { data } = await axios.delete(`/api/places/${id}`)
-                if (data.success) {
-                    toast.success(data.message)
-                }
-
-            } catch (error) {
-                toast.error(error)
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        deletePlace(id)
     }
 
     return (
         <div className='container container-fluid'>
             {
-                !places ? <Loader />
+                isLoadingPlaces ? <Loader />
                     :
                     <>
                         <h1 className='my-5'>All Places
@@ -68,7 +37,7 @@ const AllPlaces = () => {
                             </Link>
                         </h1>
 
-                        {places && places.length !== 0 ?
+                        {data && data.places.length !== 0 ?
                             <Table responsive>
                                 <thead>
                                     <tr>
@@ -80,7 +49,7 @@ const AllPlaces = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {places.map((place, index) => (
+                                    {data.places.map((place, index) => (
                                         <tr key={index}>
                                             <td>{index}</td>
                                             <td>{place._id}</td>
@@ -91,14 +60,19 @@ const AllPlaces = () => {
                                                     <i className="fa fa-pencil"></i>
                                                 </Link>
                                                 <button className="btn btn-danger mx-2" onClick={() => deletePlaceHandler(place._id)}>
-                                                    <i className="fa fa-trash"></i>
+                                                    {isLoading ?
+                                                        <div className="spinner-border spinner-border-sm" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div> :
+                                                        <i className="fa fa-trash"></i>
+                                                    }
                                                 </button>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </Table> :
-                            <div className="text-center fs-1"> No Bookings</div>
+                            <div className="text-center fs-1"> No Places</div>
                         }
                     </>
             }

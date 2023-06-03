@@ -45,6 +45,7 @@ export default function Navigation() {
                     <Link className='dropdown-item' href="/admin/places">All Places</Link>
                     <Link className='dropdown-item' href="/admin/bookings">All Bookings</Link>
                     <Link className='dropdown-item' href="/admin/users">All Users</Link>
+                    <Link className='dropdown-item' href="/admin/reviews">All Reviews</Link>
                     <hr />
                   </>
                 }

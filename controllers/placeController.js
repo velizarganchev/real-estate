@@ -200,6 +200,9 @@ const createPlaceReview = catchAsyncErrors(async (req, res) => {
 const checkReviewAvailability = catchAsyncErrors(async (req, res) => {
 
     const { placeId } = req.query;
+
+    console.log(req.query);
+    // console.log(req.user._id);
     const bookings = await Booking.find({ user: req.user._id, place: placeId })
 
     let isReviewAvailable = false;
@@ -249,9 +252,9 @@ const deleteReview = catchAsyncErrors(async (req, res) => {
 
     const numOfReviews = reviews.length;
 
-    const ratings = room.reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length
+    const ratings = place.reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length
 
-    await Room.findByIdAndUpdate(req.query.placeId, {
+    await Place.findByIdAndUpdate(req.query.placeId, {
         reviews,
         ratings,
         numOfReviews
