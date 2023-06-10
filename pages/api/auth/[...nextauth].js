@@ -1,8 +1,8 @@
 import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials'
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 import User from '../../../models/User';
-import db from '../../../utils/mongodb'
+import db from '../../../utils/mongodb';
 
 export const authOptions = {
     providers: [
@@ -42,11 +42,12 @@ export const authOptions = {
     },
     callbacks: {
         async jwt({ token, user }) {
-            return { ...token, ...user }
+            user && (token.user = user)
+            return Promise.resolve(token)
         },
         async session({ session, token, user }) {
             session.user = token
-            return session
+            return Promise.resolve(session)
         }
     }
 }

@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import Image from 'next/image';
+import Loader from '../../../components/layout/Loader';
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { getServerSession } from "next-auth"
@@ -6,17 +9,14 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 
 import { useGetPlaceQuery, useUpdatePlaceMutation } from '../../../redux/placeApiSlice'
 
-import axios from 'axios';
 import { toast } from 'react-toastify';
-
-import Loader from '../../../components/layout/Loader'
 
 const UpdatePlace = () => {
 
     const router = useRouter()
 
     const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState()
     const [description, setDescription] = useState('')
     const [address, setAddress] = useState('')
     const [checkIn, setCheckIn] = useState(3)
@@ -101,7 +101,6 @@ const UpdatePlace = () => {
         if (images.length !== 0) placeData.images = images
 
         updatePlace(placeData).then(function (res) {
-            console.log(res);
             if (res.data.success) {
                 router.push('/admin/places')
             }
@@ -384,7 +383,7 @@ const UpdatePlace = () => {
 
                                     {imagesPreview.map(img => (
 
-                                        <img
+                                        <Image
                                             src={img}
                                             key={img}
                                             alt="Images Preview"
@@ -396,7 +395,7 @@ const UpdatePlace = () => {
                                     ))}
                                     {oldImages && oldImages.map(img => (
 
-                                        <img
+                                        <Image
                                             src={img.url}
                                             key={img.public_id}
                                             alt="Images Preview"
@@ -430,16 +429,17 @@ export async function getServerSideProps({ req, res }) {
 
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session || session.user._doc.role !== 'admin') {
+    if (!session || session.user.user.role !== 'admin') {
         return {
             redirect: {
-                destination: '/auth/login',
+                destination: '/',
                 permanent: false
             }
         }
     }
     return {
         props: {
+            session
         }
     }
 

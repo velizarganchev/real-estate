@@ -1,40 +1,28 @@
+import Loader from '../../../components/layout/Loader';
+import Link from 'next/link';
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { useGetAllUsersQuery } from "../../../redux/userApiSlice"
-import { useEffect, useState } from "react"
+import { useGetAllAdminUsersQuery, useDeleteAdminUserMutation } from "../../../redux/adminApiSlice"
+
 import { useRouter } from "next/router"
 
-import Link from "next/link"
 import { Table } from "react-bootstrap"
-
-import axios from "axios"
-import { toast } from 'react-toastify'
-import Loader from "../../../components/layout/Loader"
 
 const AllUsers = () => {
 
     const router = useRouter()
 
-    const { data: allUsers, error, isLoading } = useGetAllUsersQuery();
+    const { data: allUsers, error, isLoading } = useGetAllAdminUsersQuery();
+    const [deleteAdminUser, { isLoading: isDeleteUserLoading }] = useDeleteAdminUserMutation();
 
-    const deleteUserHandler = async (userId) => {
-        try {
-            try {
-                const { data } = await axios.delete(`/api/admin/users/${userId}`)
+    const deleteUserHandler = (userId) => {
 
-                if (data.success) {
-                    router.push('/admin/users')
-                    toast.success(`User ${data.user.name} is deleted.`)
-                }
-
-            } catch (error) {
-                toast.error(error)
-
+        deleteAdminUser(userId).then(function (res) {
+            if (res.data.success) {
+                router.push('/admin/users')
             }
-        } catch (error) {
-            console.log(error)
-        }
+        })
     }
 
     return (
@@ -63,7 +51,7 @@ const AllUsers = () => {
                                             <td>{user.name}</td>
                                             <td>{user.email}</td>
                                             <td>{user.role}</td>
-                                            <td>
+                                            <td className="d-flex">
                                                 <Link className="btn btn-primary" href={`/admin/users/${user._id}`}>
                                                     <i className="fa fa-pencil"></i>
                                                 </Link>
@@ -89,16 +77,17 @@ export async function getServerSideProps({ req, res }) {
 
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session || session.user._doc.role !== 'admin') {
+    if (!session || session.user.user.role !== 'admin') {
         return {
             redirect: {
-                destination: '/auth/login',
+                destination: '/',
                 permanent: false
             }
         }
     }
     return {
         props: {
+            session
         }
     }
 

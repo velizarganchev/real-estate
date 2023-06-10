@@ -10,7 +10,7 @@ const handler = nc({ onError });
 
 db.dbConnect();
 
-handler.use(isAuthenticatedUser).get(getPlaceReviews)
+handler.get(getPlaceReviews)
 handler.use(isAuthenticatedUser).put(createPlaceReview)
 handler.use(isAuthenticatedUser).delete(deleteReview)
 

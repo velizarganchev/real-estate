@@ -1,22 +1,17 @@
+import Loader from '../../../components/layout/Loader';
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
 import { useGetAllReviewsQuery, useDeleteReviewMutation } from "../../../redux/reviewApiSlice"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/router"
+import { useState } from "react"
 
 import { Table } from "react-bootstrap"
 
-import axios from "axios"
 import { toast } from 'react-toastify'
 
-import Loader from "../../../components/layout/Loader"
-
-const AllPlaces = () => {
+const AllReviews = () => {
 
     const [placeId, setPlaceId] = useState('')
-
-    const router = useRouter()
 
     const { data: allReviews, error } = useGetAllReviewsQuery(placeId);
 
@@ -73,7 +68,7 @@ const AllPlaces = () => {
                                     <td>{review.rating}</td>
                                     <td>{review.comment}</td>
                                     <td>{review.name}</td>
-                                    <td>
+                                    <td className="d-flex">
                                         <button className="btn btn-danger mx-2" onClick={() => deleteReviewHandler(review._id)}>
                                             <i className="fa fa-trash"></i>
                                         </button>
@@ -95,18 +90,19 @@ export async function getServerSideProps({ req, res }) {
 
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session || session.user._doc.role !== 'admin') {
+    if (!session || session.user.user.role !== 'admin') {
         return {
             redirect: {
-                destination: '/auth/login',
+                destination: '/',
                 permanent: false
             }
         }
     }
     return {
         props: {
+            session
         }
     }
 
 }
-export default AllPlaces
+export default AllReviews

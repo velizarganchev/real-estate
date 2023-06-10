@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from 'next/link';
+import ButtonLoader from '../../components/layout/ButtonLoader';
+
+import { useState, useEffect } from 'react'
 
 import axios from 'axios'
-
 import { toast } from 'react-toastify'
-import ButtonLoader from '../../components/layout/ButtonLoader'
 
 export default function ForgotPassword() {
 

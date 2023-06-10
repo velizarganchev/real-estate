@@ -4,21 +4,53 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+    tagTypes: ['Users'],
     endpoints: (builder) => ({
         getCurrUser: builder.query({
             query: () => "me",
+            providesTags: ['Users'],
         }),
-        getAllUsers: builder.query({
-            query: () => `/admin/users`,
+        createUser: builder.mutation({
+            query: ({
+                name,
+                email,
+                password,
+                avatar
+            }) => ({
+                url: `auth/register`,
+                method: 'POST',
+                body: {
+                    name,
+                    email,
+                    password,
+                    avatar
+                },
+            }),
+            invalidatesTags: ['Users'],
         }),
-        getUserDetails: builder.query({
-            query: (id) => `/admin/users/${id}`,
+        updateUser: builder.mutation({
+            query: ({
+                name,
+                email,
+                password,
+                avatar
+            }) => ({
+                url: `me/update`,
+                method: 'PUT',
+                body: {
+                    name,
+                    email,
+                    password,
+                    avatar
+                },
+            }),
+            invalidatesTags: ['Users'],
         }),
     }),
 });
 
 export const {
     useGetCurrUserQuery,
-    useGetAllUsersQuery,
-    useGetUserDetailsQuery
+    useCreateUserMutation,
+    useUpdateUserMutation,
 } = userApi

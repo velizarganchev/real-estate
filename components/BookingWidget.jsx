@@ -1,10 +1,11 @@
+import Link from 'next/link';
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+
 import axios from "axios";
 
-import { useSession } from 'next-auth/react';
-
-import { useGetAllBookedDatesQuery } from '../redux/bookingApiSlice'
+import { useGetAllBookedDatesQuery, useCreateBookingMutation } from '../redux/bookingApiSlice'
 import { useGetCurrUserQuery } from "../redux/userApiSlice";
 
 import { toast } from 'react-toastify'
@@ -17,30 +18,39 @@ import {
     PayPalButtons,
     usePayPalScriptReducer
 } from "@paypal/react-paypal-js";
-import Link from "next/link";
 
 
 export default function BookingWidget({ place }) {
 
+    const clientId = 'ATqOflJU4g5errCRDdiA0B8gcO6w0eAAEgyMbZiWatsTsn5lPrRuWAL_8UatBbsJmQSGT1vBK1U-pQLq';
+
     const router = useRouter();
 
-    const { data: session, status } = useSession()
-    const { data: user, error, isError, isLoading, isSuccess } = useGetCurrUserQuery()
-
-    const excludedDates = [];
+    const { data: user } = useGetCurrUserQuery();
+    const [createBooking, { isLoading }] = useCreateBookingMutation();
 
     const [checkInDate, setCheckInDate] = useState()
     const [checkOutDate, setCheckOutDate] = useState()
     const [daysOfStay, setDaysOfStay] = useState()
-    const [paymentLoading, setPaymentLoading] = useState(false)
     const [available, setAvailable] = useState()
     const [toCheckOut, setToCheckOut] = useState(false)
-
-    const clientId = "ATqOflJU4g5errCRDdiA0B8gcO6w0eAAEgyMbZiWatsTsn5lPrRuWAL_8UatBbsJmQSGT1vBK1U-pQLq";
 
     const amount = daysOfStay * place.pricePerNight;
     const currency = "USD";
     const style = { "layout": "vertical" };
+
+    const excludedDates = [];
+
+    const { id } = router.query;
+
+    const { data: dates } = useGetAllBookedDatesQuery(id);
+
+    if (dates) {
+
+        dates.bookedDates.forEach(date => {
+            excludedDates.push(new Date(date))
+        })
+    }
 
     async function CheckBooking(placeId, checkInDate, checkOutDate) {
         try {
@@ -73,19 +83,7 @@ export default function BookingWidget({ place }) {
                     }
                 })
         }
-
     }
-
-    const { id } = router.query;
-    const { data: dates } = useGetAllBookedDatesQuery(id);
-
-    if (dates) {
-
-        dates.bookedDates.forEach(date => {
-            excludedDates.push(new Date(date))
-        })
-    }
-
 
 
     // Custom component to wrap the PayPalButtons and handle currency changes
@@ -118,24 +116,11 @@ export default function BookingWidget({ place }) {
                 }
             }
 
-            try {
-
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-
-                const { data } = await axios.post('/api/bookings', bookingData, config)
-                if (data.success) {
+            createBooking(bookingData).then(function (res) {
+                if (res.data.success) {
                     router.push('/bookings/me')
                 }
-            } catch (error) {
-
-                console.log(error.response);
-
-            }
-
+            })
         }
 
         return (<>
@@ -165,7 +150,6 @@ export default function BookingWidget({ place }) {
                 onApprove={function (data, actions) {
                     return actions.order.capture().then(function (details) {
                         // Your code here after capture the order
-                        console.log(details)
                         if (details.status === "COMPLETED") {
                             newBookingHandler(details)
                         }
@@ -210,14 +194,16 @@ export default function BookingWidget({ place }) {
                 {available === false &&
                     <div className="alert alert-danger my-3 font-weight-bold">Place not available. Try different dates.</div>
                 }
-                {available && isError &&
+                {available && !user &&
                     <>
-                        <div className="alert alert-danger my-3 font-weight-bold">Login to book place.</div>
-                        <Link className="btn btn-outline-primary" href={'/auth/login'}>Login</Link>
+                        <div className="alert alert-danger my-3 font-weight-bold">
+                            Login to book place.
+                            <Link className="ms-2 text-primary font-weight-bold  text-uppercase" href={'/auth/login'}>Login</Link>
+                        </div>
                     </>
                 }
 
-                {available && isSuccess &&
+                {available && user &&
                     <div className="d-grid gap-2 mt-5">
                         {toCheckOut ?
                             (<PayPalScriptProvider
@@ -242,7 +228,8 @@ export default function BookingWidget({ place }) {
                                     daysOfStay > 0 ? (`Book this place for ${daysOfStay * place.pricePerNight} $`) :
                                         ("Book this place")
                                 }
-                            </button>}
+                            </button>
+                        }
                     </div>
                 }
                 <div className="mt-4">

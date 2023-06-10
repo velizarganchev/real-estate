@@ -1,20 +1,26 @@
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 
-import { useState } from "react";
 import { Col, Row, Button, Container } from "react-bootstrap";
 
-import BookingWidget from "../../components/BookingWidget";
-import ListReviews from "../../components/review/ListReviews";
-
 import absoluteUrl from "next-absolute-url";
-import axios from "axios";
-import NewReview from "../../components/review/NewReview";
-import PlaceFeatures from "../../components/PlaceFeatures";
+import axios, { all } from "axios";
+
+import PlaceFeatures from '../../components/PlaceFeatures';
+import BookingWidget from '../../components/BookingWidget';
+import NewReview from '../../components/review/NewReview';
+import ListReviews from '../../components/review/ListReviews';
+
+import { useGetAllReviewsQuery } from '../../redux/reviewApiSlice';
+
 
 export default function PlacePage({ place }) {
 
     const [ShowAllFotos, setShowAllFotos] = useState(false);
+
+    const { data: allReviews, error, isLoading } = useGetAllReviewsQuery(place._id);
 
     if (!place) {
         return (
@@ -103,8 +109,8 @@ export default function PlacePage({ place }) {
                     </div>
                     <BookingWidget place={place} />
                     <NewReview />
-                    {place.reviews && place.reviews.length > 0 ?
-                        <ListReviews reviews={place.reviews} />
+                    {allReviews && allReviews.reviews.length > 0 ?
+                        <ListReviews reviews={allReviews.reviews} />
                         :
                         <p><b>No Reviews on this place</b></p>
                     }
@@ -115,6 +121,7 @@ export default function PlacePage({ place }) {
 }
 
 export async function getServerSideProps(context) {
+
     const id = context.params.id;
     const { origin } = absoluteUrl(context.req)
     const { data } = await axios.get(`${origin}/api/places/${id}`)

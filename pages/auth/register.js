@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import axios from 'axios'
+
+import { useCreateUserMutation } from '../../redux/userApiSlice'
 
 import { toast } from 'react-toastify'
-import ButtonLoader from '../../components/layout/ButtonLoader'
-import Link from 'next/link'
 
 const Register = () => {
 
@@ -22,29 +23,18 @@ const Register = () => {
     const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg');
     const [loading, setLoading] = useState(false);
 
+    const [createUser, { isLoading }] = useCreateUserMutation();
+
     const submitHandler = async (e) => {
         e.preventDefault();
-        try {
-            const userData = { name, email, password, avatar }
 
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        const userData = { name, email, password, avatar }
+        createUser(userData).then(function (res) {
+            if (res.data.success) {
+                toast.success('Profile is created.')
+                router.push('/auth/login')
             }
-            setLoading(true);
-
-            const { data } = await axios.post('/api/auth/register', userData, config)
-
-            setLoading(false);
-
-            if (data.success) {
-                router.push('/auth/login') 
-            }
-
-        } catch (error) {
-            toast.error(error)
-        }
+        })
     }
 
     const onChange = (e) => {
@@ -127,11 +117,13 @@ const Register = () => {
                                     <label htmlFor='avatar_upload'>Avatar</label>
                                     <div className='d-flex align-items-center justify-content-center'>
                                         <div>
-                                            <figure className='avatar mr-3 item-rtl'>
-                                                <img
+                                            <figure className='avatar me-3 item-rtl'>
+                                                <Image
                                                     src={avatarPreview}
                                                     className='rounded-circle'
                                                     alt='image'
+                                                    width={10}
+                                                    height={10}
                                                 />
                                             </figure>
                                         </div>
@@ -151,9 +143,13 @@ const Register = () => {
                                     id="login_button"
                                     type="submit"
                                     className="btn btn-outline-dark btn-lg btn-block mt-3"
-                                    disabled={loading ? true : false}
+                                    disabled={isLoading ? true : false}
                                 >
-                                    {loading ? <ButtonLoader /> : 'REGISTER'}
+                                    {loading ?
+                                        <div className="spinner-border" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div>
+                                        : 'REGISTER'}
                                 </button>
                             </div>
                         </form>

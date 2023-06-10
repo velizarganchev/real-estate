@@ -1,4 +1,6 @@
-import React from 'react'
+import Link from 'next/link';
+import Image from 'next/image';
+import Loader from '../../components/layout/Loader';
 
 import { getServerSession } from "next-auth"
 import { authOptions } from '../api/auth/[...nextauth]'
@@ -7,10 +9,6 @@ import { useGetBookingDetailsQuery } from "../../redux/bookingApiSlice"
 import { useGetCurrUserQuery } from '../../redux/userApiSlice'
 
 import { useRouter } from "next/router"
-import Loader from '../../components/layout/Loader'
-
-import Image from 'next/image'
-import Link from 'next/link'
 
 const BookingDetails = () => {
 
@@ -28,6 +26,12 @@ const BookingDetails = () => {
     }
     if (userData) {
         isAdmin = userData.user && userData.user.role === 'admin' ? true : false
+    }
+
+    function addOneDay(dateStr) {
+        const date = new Date(dateStr)
+        date.setDate(date.getDate() + 1);
+        return date;
     }
 
     return (
@@ -53,7 +57,7 @@ const BookingDetails = () => {
                                     <h4 className="mb-4">Booking Info</h4>
                                     <p><b>Check In:</b> {new Date(bookingData.booking.checkInDate).toLocaleString('en-US')}</p>
 
-                                    <p><b>Check Out:</b> {new Date(bookingData.booking.checkOutDate).toLocaleString('en-US')}</p>
+                                    <p><b>Check Out:</b> {addOneDay(bookingData.booking.checkOutDate).toLocaleString('en-US')}</p>
 
                                     <p><b>Days of Stay:</b> {bookingData.booking.daysOfStay}</p>
 
@@ -120,6 +124,7 @@ export async function getServerSideProps({ req, res }) {
     }
     return {
         props: {
+            session
         }
     }
 

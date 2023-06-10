@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 let cashed = global.mongoose;
 
 if (!cashed) {

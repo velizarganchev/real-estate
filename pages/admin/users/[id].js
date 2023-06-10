@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import Loader from '../../../components/layout/Loader';
+import { getServerSession } from "next-auth"
+import { authOptions } from "../../api/auth/[...nextauth]"
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { toast } from 'react-toastify';
-import Loader from '../../../components/layout/Loader';
 
-import axios from 'axios';
-
-import { useGetUserDetailsQuery } from '../../../redux/userApiSlice';
+import { useGetUserAdminDetailsQuery, useUpdateAdminUserMutation } from "../../../redux/adminApiSlice";
 
 const UpdateUser = () => {
 
@@ -14,10 +15,12 @@ const UpdateUser = () => {
     const [email, setEmail] = useState('')
     const [role, setRole] = useState('')
 
-    const router = useRouter()
+    const router = useRouter();
     const userId = router.query.id;
 
-    const { data, error, isLoading } = useGetUserDetailsQuery(userId);
+    const { data, error, isLoading } = useGetUserAdminDetailsQuery(userId);
+
+    const [updateAdminUser, { isLoading: isUpdateLoading }] = useUpdateAdminUserMutation();
 
     useEffect(() => {
 
@@ -31,38 +34,17 @@ const UpdateUser = () => {
         }
     }, [data, error])
 
-
-    async function Update(userId, userData, config) {
-        try {
-            return await axios.put(`/api/admin/users/${userId}`, userData, config)
-        } catch (error) {
-            toast.error(error)
-        }
-    }
-
     const submitHandler = (e) => {
         e.preventDefault();
-        try {
 
-            const userData = {
-                name, email, role
-            }
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            Update(userId, userData, config).then(function (success) {
-                if (success) {
-                    router.push('/admin/users')
-                }
-            })
-
-        } catch (error) {
-            toast.error(error)
+        const userData = {
+            userId, name, email, role
         }
+        updateAdminUser(userData).then(function (res) {
+            if (res.data.success) {
+                router.push('/admin/users')
+            }
+        })
     }
 
     return (
@@ -123,6 +105,26 @@ const UpdateUser = () => {
             }
         </div>
     )
+}
+
+export async function getServerSideProps({ req, res }) {
+
+    const session = await getServerSession(req, res, authOptions)
+
+    if (!session || session.user.user.role !== 'admin') {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+    return {
+        props: {
+            session
+        }
+    }
+
 }
 
 export default UpdateUser

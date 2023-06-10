@@ -1,4 +1,5 @@
 export default function Contact() {
+
     return (
         <div id="contact" className="contact section-padding">
             <div className="container">
@@ -6,7 +7,7 @@ export default function Contact() {
                     <div className="col-md-12">
                         <div className="section-header text-center pb-5">
                             <h2>Contact Us</h2>
-                            <p>Lorem, ipsum dolor sit amet consectetur <br/> adipisicing elit. Illum qui illo.
+                            <p>Lorem, ipsum dolor sit amet consectetur <br /> adipisicing elit. Illum qui illo.
                             </p>
                         </div>
                     </div>
@@ -17,17 +18,26 @@ export default function Contact() {
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="mb-3">
-                                        <input type="text" className="form-control" required placeholder="Your Full name"/>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            required placeholder="Your Full name" />
                                     </div>
                                 </div>
                                 <div className="col-md-12">
                                     <div className="mb-3">
-                                        <input type="email" className="form-control" required placeholder="Your Email address"/>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            required placeholder="Your Email address" />
                                     </div>
                                 </div>
                                 <div className="col-md-12">
                                     <div className="mb-3">
-                                        <textarea rows="3" required className="form-control"
+                                        <textarea
+                                            rows="3"
+                                            required
+                                            className="form-control"
                                             placeholder="Your Query Here"></textarea>
                                     </div>
                                 </div>

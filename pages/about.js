@@ -1,15 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function About() {
     return (
         <section id="about" className="about section-padding">
             <div className="container">
                 <div className="row">
-                    <div className="col-lg-4 col-md-12 col-12">
-                        <div className="about-img">
-                            <Image src="/images/aboutImg.jpg" alt="" className="img-fluid" width={400} height={300} />
-                        </div>
+                    <div className="col-lg-4 col-md-12 col-12 d-flex align-items-center">
+                        <Image src="/images/aboutImg.jpg" alt="" className="img-fluid" width={400} height={300} />
                     </div>
                     <div className="col-lg-8 col-md-12 col-12 ps-lg-2">
                         <div className="about-text">

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import Image from 'next/image';
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { getServerSession } from "next-auth"
@@ -339,7 +340,7 @@ const NewPlace = () => {
 
                             {imagesPreview.map(img => (
 
-                                <img
+                                <Image
                                     src={img}
                                     key={img}
                                     alt="Images Preview"
@@ -372,16 +373,17 @@ export async function getServerSideProps({ req, res }) {
 
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session || session.user._doc.role !== 'admin') {
+    if (!session || session.user.user.role !== 'admin') {
         return {
             redirect: {
-                destination: '/auth/login',
+                destination: '/',
                 permanent: false
             }
         }
     }
     return {
         props: {
+            session
         }
     }
 

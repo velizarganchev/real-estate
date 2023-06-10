@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { useRouter } from 'next/router';
 
-import { useCheckAvailabilityQuery } from '../../redux/reviewApiSlice';
-
-import { toast } from 'react-toastify'
-import axios from 'axios';
+import { useCheckAvailabilityQuery, useCreateReviewMutation } from '../../redux/reviewApiSlice';
 
 export default function NewReview() {
 
@@ -15,36 +12,20 @@ export default function NewReview() {
 
     const router = useRouter();
 
-    let isAvailable = false;
     const { id } = router.query;
 
-    const { data } = useCheckAvailabilityQuery(id)
+    const { data } = useCheckAvailabilityQuery(id);
 
-    if (data) {
-        isAvailable = data.isReviewAvailable
-    }
-    
+    const [createReview, { isLoading }] = useCreateReviewMutation();
+
+
     const submitHandler = async () => {
-        try {
-            const reviewData = {
-                rating, comment, placeId: id
-            }
 
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            const { data } = await axios.put('/api/reviews', reviewData, config)
-
-            if (data.success) {
-                toast.success('Review is posted.')
-            }
-
-        } catch (error) {
-            toast.error(error)
+        const reviewData = {
+            rating, comment, placeId: id
         }
+
+        createReview(reviewData)
     }
 
     function setUserRatings() {
@@ -90,7 +71,7 @@ export default function NewReview() {
 
     return (
         <>
-            {isAvailable &&
+            {data && data.isReviewAvailable &&
                 <button onClick={setUserRatings} type="button" className='btn btn-outline-dark btn-lg btn-block m-2' data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Submit Your Review
                 </button>

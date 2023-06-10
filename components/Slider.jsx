@@ -1,14 +1,14 @@
 import Image from 'next/image';
-import Carousel from 'react-bootstrap/Carousel';
+import  Carousel  from 'react-bootstrap/Carousel';
 
 export default function Slider() {
     return (
         <Carousel slide={false}>
-            <Carousel.Item> 
+            <Carousel.Item>
                 <Image
                     width={1600}
                     height={600}
-                    className="d-block"
+                    className="d-block w-100"
                     src="/images/carusel/1.png"
                     alt="First slide"
                     priority={true}
@@ -22,7 +22,7 @@ export default function Slider() {
                 <Image
                     width={1600}
                     height={600}
-                    className="d-block"
+                    className="d-block w-100"
                     src="/images/carusel/2.png"
                     alt="Second slide"
                 />
@@ -36,11 +36,10 @@ export default function Slider() {
                 <Image
                     width={1600}
                     height={600}
-                    className="d-block"
+                    className="d-block w-100"
                     src="/images/carusel/3.png"
                     alt="Third slide"
                 />
-
                 <Carousel.Caption>
                     <h5>Third</h5>
                     <p>

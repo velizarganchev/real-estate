@@ -1,6 +1,9 @@
+import dynamic from 'next/dynamic';
+
 import Head from 'next/head'
-import Navigation from './Navigation'
-import Footer from './Footer'
+
+const Header = dynamic(() => import("./Navigation"));
+const Footer = dynamic(() => import("./Footer"));
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +17,7 @@ export default function Layout({ children, title = 'Book Best Place for your Hol
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Navigation />
+            <Header />
             <ToastContainer position='bottom-right' />
             {children}
             <Footer />

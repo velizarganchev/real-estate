@@ -1,10 +1,9 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from 'next/link';
+import Image from 'next/image';
 import { Navbar, Nav } from 'react-bootstrap'
 
-import React from 'react'
-
 export default function Footer() {
+
     const year = new Date().getFullYear()
 
     return (
@@ -39,7 +38,7 @@ export default function Footer() {
             <Navbar className="justify-content-center " bg="dark" expand="lg">
                 <Nav className="justify-content-center" variant="tabs">
                     <Link className='nav-link text-light' href="/">Home</Link>
-                    <Link className='nav-link text-light' href="/">Apartments & Homes</Link>
+                    <Link className='nav-link text-light' href="/places">Apartments & Homes</Link>
                 </Nav>
             </Navbar>
             <div className="text-center text-light p-4">

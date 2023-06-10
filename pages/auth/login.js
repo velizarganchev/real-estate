@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
+import Link from 'next/link';
+import ButtonLoader from '../../components/layout/ButtonLoader';
+
+import { useState } from 'react'
 import router from 'next/router'
 
 import { signIn } from 'next-auth/react'
 
 import { toast } from 'react-toastify'
-
-import ButtonLoader from '../../components/layout/ButtonLoader'
 
 const Login = () => {
 
@@ -17,12 +17,16 @@ const Login = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
 
+        setLoading(true);
+
         const result = await signIn('credentials', {
             email: email,
             password: password,
             redirect: false,
 
         })
+        
+        setLoading(false);
 
         if (result.error) {
             toast.error(result.error);
@@ -69,7 +73,7 @@ const Login = () => {
                                     </div>
                                 </div>
 
-                                <Link href="/password/forgot" className="float-right mb-4">Forgot Password?</Link>
+                                <Link href="/password/forgot" className="nav-link mb-4">Forgot Password?</Link>
 
                                 <button
                                     id="login_button"
@@ -78,7 +82,7 @@ const Login = () => {
                                     disabled={loading ? true : false}
                                 >{loading ? <ButtonLoader /> : 'LOGIN'}
                                 </button>
-                                <Link href="/auth/register" className="float-right mt-3">New User?</Link>
+                                <Link href="/auth/register" className="nav-link mt-3">New User?</Link>
                             </div>
                         </form>
                     </div>

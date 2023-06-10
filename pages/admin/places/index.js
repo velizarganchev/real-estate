@@ -1,21 +1,17 @@
+import Loader from '../../../components/layout/Loader';
+import Link from 'next/link';
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import Link from "next/link"
 import { Table } from "react-bootstrap"
 
 import { useGetAllPlacesQuery, useDeletePlaceMutation } from "../../../redux/placeApiSlice"
-
-import Loader from "../../../components/layout/Loader"
 
 const AllPlaces = () => {
 
     const {
         data,
         isLoading: isLoadingPlaces,
-        isFetching,
-        isError,
-        error,
     } = useGetAllPlacesQuery();
 
     const [deletePlace, { isLoading }] = useDeletePlaceMutation();
@@ -55,7 +51,7 @@ const AllPlaces = () => {
                                             <td>{place._id}</td>
                                             <td>{place.name}</td>
                                             <td>{place.pricePerNight}</td>
-                                            <td>
+                                            <td className="d-flex">
                                                 <Link className="btn btn-primary" href={`/admin/places/${place._id}`}>
                                                     <i className="fa fa-pencil"></i>
                                                 </Link>
@@ -84,16 +80,17 @@ export async function getServerSideProps({ req, res }) {
 
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session || session.user._doc.role !== 'admin') {
+    if (!session || session.user.user.role !== 'admin') {
         return {
             redirect: {
-                destination: '/auth/login',
+                destination: '/',
                 permanent: false
             }
         }
     }
     return {
         props: {
+            session
         }
     }
 

@@ -1,34 +1,17 @@
 import Link from 'next/link';
+import Image from 'next/image';
+
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import axios from 'axios';
-
-import { Button, NavDropdown } from 'react-bootstrap';
-import { signOut } from 'next-auth/react';
-
-import Image from 'next/image';
+import { NavDropdown } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navigation() {
 
   const { data: session, status } = useSession()
-
-  const [user, setUser] = useState()
-
-  async function loadUser() {
-    return await axios.get('http://localhost:3000/api/me')
-  }
-  useEffect(() => {
-    if (status === "authenticated") {
-      loadUser().then(function (result) {
-        setUser(result.data.user)
-      })
-    }
-
-  }, [status]);
 
   return (
     <Navbar collapseOnSelect bg="light" expand="lg">
@@ -38,25 +21,36 @@ export default function Navigation() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             {/* <Link className='nav-link' href="/sierrahScarpine">Sierrah Scarpin</Link> */}
-            {user ?
-              <NavDropdown title={user ? <Image className="rounded-circle" width={26} height={26} alt='avatar' src={user.avatar.url}></Image> : ''} id="basic-nav-dropdown">
-                {user.role === 'admin' &&
-                  <>
-                    <Link className='dropdown-item' href="/admin/places">All Places</Link>
-                    <Link className='dropdown-item' href="/admin/bookings">All Bookings</Link>
-                    <Link className='dropdown-item' href="/admin/users">All Users</Link>
-                    <Link className='dropdown-item' href="/admin/reviews">All Reviews</Link>
-                    <hr />
-                  </>
-                }
-                <Link className='dropdown-item' href="/me/profile">Profile</Link>
-                <Link className='dropdown-item' href="/bookings/me">My Bookings</Link>
-                <Link className='dropdown-item' href="/  " onClick={() => signOut()}>Logout</Link>
-              </NavDropdown> :
-              <Link className='nav-link' href="/auth/login">Login</Link>
+            {
+              status === "loading" ?
+                <Spinner animation="border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </Spinner>
+                :
+                session ?
+                  <NavDropdown title={session.user ?
+                    <Image className="rounded-circle" width={26} height={26} alt='avatar' src={session.user.user.avatar.url}></Image>
+                    :
+                    ''
+                  } id="basic-nav-dropdown">
+                    {session.user.user.role === 'admin' &&
+                      <>
+                        <Link className='dropdown-item' href="/admin/places">All Places</Link>
+                        <Link className='dropdown-item' href="/admin/bookings">All Bookings</Link>
+                        <Link className='dropdown-item' href="/admin/users">All Users</Link>
+                        <Link className='dropdown-item' href="/admin/reviews">All Reviews</Link>
+                        <hr />
+                      </>
+                    }
+                    <Link className='dropdown-item' href="/me/profile">Profile</Link>
+                    <Link className='dropdown-item' href="/bookings/me">My Bookings</Link>
+                    <Link className='dropdown-item' href="/  " onClick={() => signOut()}>Logout</Link>
+                  </NavDropdown>
+                  :
+                  <Link className='nav-link' href="/auth/login">Login</Link>
             }
             {/* <Link className='nav-link' href="/contact">Contact Us</Link> */}
-            <Link className='nav-link border border-dark rounded-pill text-light bg-dark bg-gradient' id='book_now_btn' href="/me/profile">Book Now</Link>
+            <Link className='nav-link ms-2 rounded-pill text-light bg-dark text-center' id='book_now_btn' href="/places">Book Now</Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

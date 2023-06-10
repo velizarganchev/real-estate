@@ -1,17 +1,18 @@
-import { authOptions } from "../api/auth/[...nextauth]"
-import { getServerSession } from "next-auth"
+import Loader from '../../components/layout/Loader';
+import Image from 'next/image';
 
-import axios from "axios"
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 
-import { useRouter } from "next/router"
-import { useState, useEffect } from "react"
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
-import { toast } from 'react-toastify'
-import Loader from "../../components/layout/Loader"
+import { toast } from 'react-toastify';
 
-import { useGetCurrUserQuery } from "../../redux/userApiSlice"
+import { useGetCurrUserQuery, useUpdateUserMutation } from "../../redux/userApiSlice";
 
 export default function Profile() {
+
     const router = useRouter();
 
     const [user, setUser] = useState({
@@ -27,26 +28,10 @@ export default function Profile() {
 
     const { data, error, isLoading } = useGetCurrUserQuery();
 
-    async function LoadUser() {
-        try {
-            return await axios.get('http://localhost:3000/api/me')
-        } catch (error) {
-            toast.error(error)
-
-        }
-    }
-
-    async function Update(userData, config) {
-        try {
-            return await axios.put('http://localhost:3000/api/me/update', userData, config)
-        } catch (error) {
-            toast.error(error)
-
-        }
-    }
-
+    const [updateUser, { isLoading: userUpdateIsLoading }] = useUpdateUserMutation();
 
     useEffect(() => {
+
         if (data) {
             setUser({
                 name: data.user.name,
@@ -54,37 +39,20 @@ export default function Profile() {
             })
             setAvatarPreview(data.user.avatar.url)
         }
-        // LoadUser().then(function (result) {
-        //     const data = result.data
-        //     if (data.success) {
-        //         setUser({
-        //             name: data.user.name,
-        //             email: data.user.email
-        //         })
-        //         setAvatarPreview(data.user.avatar.url)
-        //     }
-        // })
-    }, [data]);
 
+    }, [data]);
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        try {
-            const userData = { name, email, password, avatar }
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
 
-            Update(userData, config).then(function (success) {
-                if (success) {
-                    router.push('/')
-                }
-            })
-        } catch (error) {
-            toast.error(error)
-        }
+        const userData = { name, email, password, avatar }
+        updateUser(userData).then(function (res) {
+            if (res.data.success) {
+                toast.success('Profile is updated.')
+                router.push('/')
+            }
+        })
+
     }
 
     const onChange = (e) => {
@@ -171,10 +139,12 @@ export default function Profile() {
                                                 <div className='d-flex align-items-center justify-content-center'>
                                                     <div>
                                                         <figure className='avatar mr-3 item-rtl'>
-                                                            <img
+                                                            <Image
                                                                 src={avatarPreview}
                                                                 className='rounded-circle'
                                                                 alt='image'
+                                                                width={10}
+                                                                height={10}
                                                             />
                                                         </figure>
                                                     </div>

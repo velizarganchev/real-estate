@@ -1,4 +1,3 @@
-
 export default function Search() {
     return (
         <div className="d-flex justify-content-center my-5">
