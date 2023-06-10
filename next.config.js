@@ -3,6 +3,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 module.exports = withBundleAnalyzer({
   reactStrictMode: false,
+  outputFileTracing: false,
   images: {
     domains: ['res.cloudinary.com', 'shoplineimg.com'],
   },

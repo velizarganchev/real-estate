@@ -19,7 +19,7 @@ export default function Index({ places }) {
         <Contact />
       </div>
     </div>
-  )
+  ) 
 }
 
 export async function getServerSideProps({ req, res }) {
