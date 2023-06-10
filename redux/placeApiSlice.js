@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const placeApi = createApi({
     reducerPath: 'placeApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estate-m8l77a8n2-velizarganchev.vercel.app/api/' }),
     tagTypes: ['Places'],
     endpoints: (builder) => ({
         getAllPlaces: builder.query({
