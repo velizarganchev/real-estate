@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const adminApi = createApi({
     reducerPath: 'adminApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estatev.vercel.app/api/' }),
     tagTypes: ['Admin'],
     endpoints: (builder) => ({
         getAllAdminUsers: builder.query({

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const reviewApi = createApi({
     reducerPath: 'reviewApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estatev.vercel.app/api/' }),
     tagTypes: ['Reviews'],
     endpoints: (builder) => ({
         getAllReviews: builder.query({
