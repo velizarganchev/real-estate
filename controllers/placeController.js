@@ -1,6 +1,6 @@
 import Place from "../models/Place";
 import Booking from "../models/Booking"
-import cloudinary from "cloudinary";
+import cloudinary from "../utils/cloudinary";
 
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
@@ -40,21 +40,23 @@ const newPlace = catchAsyncErrors(async (req, res) => {
 
     let imagesLinks = [];
 
+
     for (let i = 0; i < images.length; i++) {
 
-        const result = await cloudinary.v2.uploader.upload(images[i], {
+
+        await cloudinary.uploader.upload(images[i], {
             folder: 'realestate/places',
-        });
+        }).then(res =>
 
-        imagesLinks.push({
-            public_id: result.public_id,
-            url: result.secure_url
-        })
-
+            imagesLinks.push({
+                public_id: res.public_id,
+                url: res.secure_url
+            })
+        );
     }
 
     req.body.images = imagesLinks;
-    req.body.user = req.user._id
+    req.body.user = req.user._id;
 
     const place = await Place.create(req.body)
 
@@ -93,7 +95,7 @@ const updatePlace = catchAsyncErrors(async (req, res) => {
 
         // Delete images associated with the place
         for (let i = 0; i < place.images.length; i++) {
-            await cloudinary.v2.uploader.destroy(place.images[i].public_id)
+            await cloudinary.uploader.destroy(place.images[i].public_id)
         }
 
         let imagesLinks = []
@@ -101,19 +103,16 @@ const updatePlace = catchAsyncErrors(async (req, res) => {
 
         for (let i = 0; i < images.length; i++) {
 
-            const result = await cloudinary.v2.uploader.upload(images[i], {
+            await cloudinary.uploader.upload(images[i], {
                 folder: 'realestate/places',
-            });
-
-            imagesLinks.push({
-                public_id: result.public_id,
-                url: result.secure_url
-            })
-
+            }).then(res =>
+                imagesLinks.push({
+                    public_id: res.public_id,
+                    url: res.secure_url
+                })
+            );
         }
-
         req.body.images = imagesLinks;
-
     }
 
     place = await Place.findByIdAndUpdate(req.query.id, req.body, {
@@ -140,7 +139,7 @@ const deletePlace = catchAsyncErrors(async (req, res) => {
 
     // Delete images associated with the room
     for (let i = 0; i < place.images.length; i++) {
-        await cloudinary.v2.uploader.destroy(place.images[i].public_id)
+        await cloudinary.uploader.destroy(place.images[i].public_id)
     }
 
 
@@ -239,7 +238,6 @@ const getPlaceReviews = catchAsyncErrors(async (req, res) => {
     })
 
 })
-
 
 // Delete place review - ADMIN   =>   /api/reviews
 const deleteReview = catchAsyncErrors(async (req, res) => {

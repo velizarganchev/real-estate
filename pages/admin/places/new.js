@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import Image from 'next/image'
+
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -7,6 +8,7 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 
 import { useCreatePlaceMutation } from '../../../redux/placeApiSlice'
 import { toast } from 'react-toastify';
+
 
 const NewPlace = () => {
 
@@ -36,6 +38,7 @@ const NewPlace = () => {
 
     const [createPlace, { isLoading, isFetching }] = useCreatePlaceMutation();
 
+    
     const submitHandler = (e) => {
         e.preventDefault()
 
@@ -64,6 +67,7 @@ const NewPlace = () => {
         if (images.length === 0) return toast.error('Please upload images.')
 
         createPlace(placeData).then(function (res) {
+            
             if (res.data.success) {
                 router.push('/admin/places')
             }
@@ -91,6 +95,7 @@ const NewPlace = () => {
 
         })
     }
+
     return (
         <div className="container container-fluid">
             <div className="row wrapper">

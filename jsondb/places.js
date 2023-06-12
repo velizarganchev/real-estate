@@ -22,15 +22,15 @@ const jsondb = {
             "images": [
                 {
                     "public_id": "realestate/places/A7304579_xlyugw",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685352625/realestate/places/A7304579_xlyugw.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509756/realestate/places/A7304714_jldwim.jpg"
                 },
                 {
                     "public_id": "realestate/places/A7304657_vqhm6m",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685353487/realestate/places/A7304657_vqhm6m.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509755/realestate/places/A7304675_iug38y.jpg"
                 },
                 {
                     "public_id": "realestate/places/A7304672_jz2rsm",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685352989/realestate/places/A7304672_jz2rsm.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509755/realestate/places/A7304657_brhvbq.jpg"
                 }
             ]
         },
@@ -56,15 +56,15 @@ const jsondb = {
             "images": [
                 {
                     "public_id": "realestate/places/A7304579_xlyugw",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685352625/realestate/places/A7304579_xlyugw.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509758/realestate/places/A7304690_wnjzr7.jpg"
                 },
                 {
                     "public_id": "realestate/places/A7304657_vqhm6m",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685353487/realestate/places/A7304657_vqhm6m.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509756/realestate/places/A7304744_iv3hdm.jpg"
                 },
                 {
                     "public_id": "realestate/places/A7304672_jz2rsm",
-                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1685352989/realestate/places/A7304672_jz2rsm.jpg"
+                    "url": "https://res.cloudinary.com/realestate-veli/image/upload/v1686509755/realestate/places/A7304675_iug38y.jpg"
                 }
             ],
         },
