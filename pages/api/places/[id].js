@@ -8,6 +8,8 @@ const handler = nc({ onError });
 
 db.dbConnect();
 
+export const config = { api: { bodyParser: { sizeLimit: '25mb' } } }
+
 handler.get(getSingelePlace)
 handler
     .use(isAuthenticatedUser, authorizeRoles('admin'))

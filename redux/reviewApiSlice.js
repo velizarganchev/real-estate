@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const reviewApi = createApi({
     reducerPath: 'reviewApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estatev.vercel.app/api/' }),
-    tagTypes: ['Reviews'],
+    tagTypes: ['Reviews', 'Bookings'],
     endpoints: (builder) => ({
         getAllReviews: builder.query({
             query: (id) => `reviews?id=${id}`,
@@ -12,6 +12,7 @@ export const reviewApi = createApi({
         }),
         checkAvailability: builder.query({
             query: (id) => `reviews/check_review_availability?placeId=${id}`,
+            invalidatesTags: ['Bookings'],
         }),
         createReview: builder.mutation({
             query: ({

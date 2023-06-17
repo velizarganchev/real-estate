@@ -20,7 +20,9 @@ export default function Navigation() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            {/* <Link className='nav-link' href="/sierrahScarpine">Sierrah Scarpin</Link> */}
+            <Link className='nav-link' href="/sierrah-scarpine">About me</Link>
+            <Link className='nav-link' href="/specialties">Specialties</Link>
+            <Link className='nav-link' href="/contact">Contact</Link>
             {
               status === "loading" ?
                 <Spinner animation="border" role="status">
@@ -49,7 +51,6 @@ export default function Navigation() {
                   :
                   <Link className='nav-link' href="/auth/login">Login</Link>
             }
-            {/* <Link className='nav-link' href="/contact">Contact Us</Link> */}
             <Link className='nav-link ms-2 rounded-pill text-light bg-dark text-center' id='book_now_btn' href="/places">Book Now</Link>
           </Nav>
         </Navbar.Collapse>

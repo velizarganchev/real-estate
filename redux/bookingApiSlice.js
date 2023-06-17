@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const bookingApi = createApi({
     reducerPath: 'bookingApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estatev.vercel.app/api/' }),
-    tagTypes: ['Bookings', 'Admin'],
+    tagTypes: ['Bookings', 'Admin', 'Places'],
     endpoints: (builder) => ({
         getAllMyBookings: builder.query({
             query: () => `bookings/me`,
@@ -34,7 +34,7 @@ export const bookingApi = createApi({
         }),
         getAllBookedDates: builder.query({
             query: (placeId) => `bookings/check_booked_dates?placeId=${placeId}`,
-            invalidatesTags: ['Bookings'],
+            invalidatesTags: ['Bookings', 'Places'],
         }),
         getBookingDetails: builder.query({
             query: (id) => `bookings/${id}`,
