@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 function Specialties() {
     return (
         <section id="services" className="services section-padding">
@@ -11,6 +13,15 @@ function Specialties() {
                             </p>
                         </div>
                     </div>
+                    
+                    <Image
+                        width={1000}
+                        height={500}
+                        className="d-block w-100 mb-5"
+                        src="/images/carusel/2.png"
+                        alt="Second slide"
+                        priority
+                    />
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-12 col-lg-4 mb-3">
@@ -57,7 +68,7 @@ function Specialties() {
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="section-header text-center pb-5">
+                        <div className="section-header text-center mt-3">
                             <p>
                                 We take pride in providing customized and specialized housing solutions to meet the unique needs of our clients.
                                 Contact us today to learn more about how we can help you find the perfect housing solution for your needs!

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 function AboutScarpine() {
     return (
@@ -18,7 +19,7 @@ function AboutScarpine() {
                                 <br /><br />As a lifelong resident of Orange County, Sierrah has an intimate understanding of the community and the nuances of the local real estate market. Her clients appreciate her attention to detail, her communication skills, and her commitment to their satisfaction.
                                 <br /><br /> Sierrah`s passion for real estate began early on when she worked as a property manager for short-term vacation rentals. She quickly discovered her love for designing homes and helping people find the perfect place for their stay. Since then, Sierrah has built her portfolio with three properties, managing multiple corporate housing rentals, and building a reputation as a successful real estate agent.
                             </p>
-                            {/* <a href="" className="btn btn-warning">Learn More</a> */}
+                            <Link href="/about" className="btn btn-outline-dark">Learn More About Us</Link>
                         </div>
                     </div>
                 </div>

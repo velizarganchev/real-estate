@@ -6,7 +6,7 @@ export default function About() {
         <section id="about" className="about section-padding">
             <div className="container">
                 <div className="row">
-                    <div className="col-lg-4 col-md-12 col-12 d-flex align-items-center">
+                    <div className="col-lg-4 col-md-12 col-12 d-flex align-items-center mb-4">
                         <Image src="/images/aboutImg.jpg" alt="" className="img-fluid" width={400} height={300} />
                     </div>
                     <div className="col-lg-8 col-md-12 col-12 ps-lg-2">

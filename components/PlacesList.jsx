@@ -30,8 +30,6 @@ export default function PlacesList({ places }) {
                     </Col>
                 ))}
             </Row>
-            <br></br>
-            <br></br>
         </div>
     )
 }

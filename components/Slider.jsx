@@ -14,8 +14,7 @@ export default function Slider() {
                     priority
                 />
                 <Carousel.Caption>
-                    <h5>First</h5>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                    <h5>Discover Your Dream Getaway</h5>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -29,8 +28,7 @@ export default function Slider() {
                 />
 
                 <Carousel.Caption>
-                    <h5>Second</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <h5>Indulge in Coastal Elegance</h5>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -43,10 +41,7 @@ export default function Slider() {
                     priority
                 />
                 <Carousel.Caption>
-                    <h5>Third</h5>
-                    <p>
-                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                    </p>
+                    <h5>Book Now and Experience Exceptional Hospitality</h5>
                 </Carousel.Caption>
             </Carousel.Item>
         </Carousel>
