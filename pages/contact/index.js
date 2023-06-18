@@ -7,7 +7,7 @@ export default function Contact() {
                     <div className="col-md-12">
                         <div className="section-header text-center pb-5">
                             <h2>Contact Us</h2>
-                            <p>Lorem, ipsum dolor sit amet consectetur <br /> adipisicing elit. Illum qui illo.
+                            <p>today to learn more about how we can help you find <br/> the perfect housing solution for your needs!
                             </p>
                         </div>
                     </div>
