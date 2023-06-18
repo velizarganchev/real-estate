@@ -14,9 +14,9 @@ export default function Footer() {
                         <h6 className="text-uppercase fw-bold mb-4 text-light">Contact</h6>
                         <p className='text-light'>
                             <i className="fas fa-envelope me-3"></i>
-                            info@example.com
+                            sierrah.scarpine@aspectrep.com
                         </p>
-                        <p className='text-light'><i className="fas fa-phone me-3"></i> + 01 234 567 88</p>
+                        <p className='text-light'><i className="fas fa-phone me-3"></i> + 714-858-0201</p>
                         <Link className="me-2 text-light " style={{ fontSize: '20px' }} href="https://www.facebook.com/sierrah.scarpine/"><i className="fa-brands fa-facebook"></i></Link>
                         <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.instagram.com/sierrahscarpine/"><i className="fa-brands fa-instagram"></i></Link>
                         <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.linkedin.com/in/sierrah-scarpine-113b2b154/"><i className="fa-brands fa-linkedin"></i></Link>
