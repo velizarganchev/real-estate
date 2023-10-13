@@ -24,7 +24,7 @@ export default function BookingWidget({ place }) {
 
     const router = useRouter();
 
-    const { data: user, error } = useSWR(`http://localhost:3000/api/me`,
+    const { data: user, error } = useSWR(`/api/me`,
         (url) => fetch(url).then((res) => res.json()));
 
     const [checkInDate, setCheckInDate] = useState()
@@ -163,78 +163,78 @@ export default function BookingWidget({ place }) {
 
     return (
         <div className="col col-lg-4 col-sm-12 shadow p-3 my-5 bg-body rounded">
-                <div className="d-flex justify-content-between">
-                    <div className="text-uppercase">
-                        {daysOfStay > 0 ?
-                            <strong className="fs-5">{daysOfStay * place.pricePerNight} $</strong> :
-                            ("Add Dates")}
-                    </div>
-                    <div className="ratings mt-auto mb-3">
-                        <div className="rating-outer">
-                            <div className="rating-inner" style={{ width: `${(place.ratings / 5) * 100}%` }}></div>
-                        </div>
-                        <span id="no_of_reviews">({place.numOfReviews} Reviews)</span>
-                    </div>
+            <div className="d-flex justify-content-between">
+                <div className="text-uppercase">
+                    {daysOfStay > 0 ?
+                        <strong className="fs-5">{daysOfStay * place.pricePerNight} $</strong> :
+                        ("Add Dates")}
                 </div>
-                <DatePicker
-                    className='w-100'
-                    selected={checkInDate}
-                    onChange={onChange}
-                    startDate={checkInDate}
-                    endDate={checkOutDate}
-                    minDate={new Date()}
-                    excludeDates={excludedDates}
-                    selectsRange
-                    inline
-                />
-                {available === true &&
-                    <div className="alert alert-success my-3 font-weight-bold">Place is available. Book now.</div>
-                }
-
-                {available === false &&
-                    <div className="alert alert-danger my-3 font-weight-bold">Place not available. Try different dates.</div>
-                }
-                {available && !user.success &&
-                    <>
-                        <div className="alert alert-danger my-3 font-weight-bold">
-                            Login to book place.
-                            <Link className="ms-2 text-primary font-weight-bold  text-uppercase" href={'/auth/login'}>Login</Link>
-                        </div>
-                    </>
-                }
-
-                {available && user.success &&
-                    <div className="d-grid gap-2 mt-5">
-                        {toCheckOut ?
-                            (<PayPalScriptProvider
-                                options={{
-                                    "client-id": clientId,
-                                    components: "buttons",
-                                    currency: "USD"
-                                }}
-                            >
-                                <ButtonWrapper
-                                    currency={currency}
-                                    showSpinner={false}
-                                />
-                            </PayPalScriptProvider>) :
-                            <button
-                                onClick={() => setToCheckOut(true)}
-                                className="btn btn-outline-dark btn-lg"
-                                type="button"
-                            // disabled={email.length >= 1 ? ('') : 'disabled' }
-                            >
-                                {
-                                    daysOfStay > 0 ? (`Book this place for ${daysOfStay * place.pricePerNight} $`) :
-                                        ("Book this place")
-                                }
-                            </button>
-                        }
+                <div className="ratings mt-auto mb-3">
+                    <div className="rating-outer">
+                        <div className="rating-inner" style={{ width: `${(place.ratings / 5) * 100}%` }}></div>
                     </div>
-                }
-                <div className="mt-4">
-                    <p className="">Enter your travel dates to see the total price per night.</p>
+                    <span id="no_of_reviews">({place.numOfReviews} Reviews)</span>
                 </div>
             </div>
+            <DatePicker
+                className='w-100'
+                selected={checkInDate}
+                onChange={onChange}
+                startDate={checkInDate}
+                endDate={checkOutDate}
+                minDate={new Date()}
+                excludeDates={excludedDates}
+                selectsRange
+                inline
+            />
+            {available === true &&
+                <div className="alert alert-success my-3 font-weight-bold">Place is available. Book now.</div>
+            }
+
+            {available === false &&
+                <div className="alert alert-danger my-3 font-weight-bold">Place not available. Try different dates.</div>
+            }
+            {available && !user.success &&
+                <>
+                    <div className="alert alert-danger my-3 font-weight-bold">
+                        Login to book place.
+                        <Link className="ms-2 text-primary font-weight-bold  text-uppercase" href={'/auth/login'}>Login</Link>
+                    </div>
+                </>
+            }
+
+            {available && user.success &&
+                <div className="d-grid gap-2 mt-5">
+                    {toCheckOut ?
+                        (<PayPalScriptProvider
+                            options={{
+                                "client-id": clientId,
+                                components: "buttons",
+                                currency: "USD"
+                            }}
+                        >
+                            <ButtonWrapper
+                                currency={currency}
+                                showSpinner={false}
+                            />
+                        </PayPalScriptProvider>) :
+                        <button
+                            onClick={() => setToCheckOut(true)}
+                            className="btn btn-outline-dark btn-lg"
+                            type="button"
+                        // disabled={email.length >= 1 ? ('') : 'disabled' }
+                        >
+                            {
+                                daysOfStay > 0 ? (`Book this place for ${daysOfStay * place.pricePerNight} $`) :
+                                    ("Book this place")
+                            }
+                        </button>
+                    }
+                </div>
+            }
+            <div className="mt-4">
+                <p className="">Enter your travel dates to see the total price per night.</p>
+            </div>
+        </div>
     )
 }
