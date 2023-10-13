@@ -116,7 +116,7 @@ export default function BookingWidget({ place }) {
                 }
             }
 
-            axios.post(`http://localhost:3000/api/bookings`, bookingData)
+            axios.post(`/api/bookings`, bookingData)
                 .then((response) => {
                     if (response.data.success) {
                         router.push('/bookings/me')
