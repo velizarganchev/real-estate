@@ -5,10 +5,8 @@ import Loader from '../../components/layout/Loader';
 import { getServerSession } from "next-auth"
 import { authOptions } from '../api/auth/[...nextauth]'
 
-import { useGetBookingDetailsQuery } from "../../redux/bookingApiSlice"
-import { useGetCurrUserQuery } from '../../redux/userApiSlice'
-
-import { useRouter } from "next/router"
+import useSWR from "swr";
+import { useRouter } from "next/router";
 
 const BookingDetails = () => {
 
@@ -16,15 +14,31 @@ const BookingDetails = () => {
     let isAdmin = false;
 
     const router = useRouter();
+
     const { id } = router.query;
 
-    const { data: bookingData, isLoading } = useGetBookingDetailsQuery(id);
-    const { data: userData } = useGetCurrUserQuery();
+    const { data: userData } = useSWR(`/api/me`,
+        (url) => fetch(url).then((res) => res.json()));
 
-    if (bookingData) {
+    const { data: bookingData, error, isLoading } = useSWR(`/api/bookings/${id}`,
+        (url) => fetch(url).then((res) => res.json()));
+
+    if (bookingData && !bookingData.success) {
+
+        return (
+            <div >
+                <div className='container'>
+                    <div className="section-header text-center pt-5 pb-5">
+                        <h1 className='mb-5 pb-5 '>{bookingData.message}</h1>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    if (bookingData && bookingData.success) {
         isPaid = bookingData.booking.paymentInfo && bookingData.booking.paymentInfo.status === 'COMPLETED' ? true : false
     }
-    if (userData) {
+    if (userData && userData.success) {
         isAdmin = userData.user && userData.user.role === 'admin' ? true : false
     }
 
@@ -88,7 +102,7 @@ const BookingDetails = () => {
                                             </div>
 
                                             <div className="col-5 col-lg-5">
-                                                <Link href={`/room/${bookingData.booking.place._id}`}>{bookingData.booking.place.name}</Link>
+                                                <Link href={`/places/${bookingData.booking.place._id}`}>{bookingData.booking.place.name}</Link>
                                             </div>
 
                                             <div className="col-4 col-lg-2 mt-4 mt-lg-0">

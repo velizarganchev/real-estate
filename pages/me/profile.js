@@ -4,34 +4,31 @@ import Image from 'next/image';
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import { toast } from 'react-toastify';
 
-import { useGetCurrUserQuery, useUpdateUserMutation } from "../../redux/userApiSlice";
+import useSWR, { mutate } from "swr";
+import axios from 'axios';
 
 export default function Profile() {
-
-    const router = useRouter();
-
     const [user, setUser] = useState({
         name: '',
         email: '',
         password: ''
-    })
+    });
 
-    const { name, email, password } = user
+    const { name, email, password } = user;
 
+    const [userUpdateIsLoading, setUserUpdateIsLoading] = useState(false);
     const [avatar, setAvatar] = useState('');
+
     const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg');
 
-    const { data, error, isLoading } = useGetCurrUserQuery();
-
-    const [updateUser, { isLoading: userUpdateIsLoading }] = useUpdateUserMutation();
+    const { data, error, isLoading } = useSWR(`/api/me`,
+        (url) => fetch(url).then((res) => res.json()));
 
     useEffect(() => {
-
         if (data) {
             setUser({
                 name: data.user.name,
@@ -46,13 +43,23 @@ export default function Profile() {
         e.preventDefault();
 
         const userData = { name, email, password, avatar }
-        updateUser(userData).then(function (res) {
-            if (res.data.success) {
-                toast.success('Profile is updated.')
-                router.push('/')
-            }
-        })
 
+        try {
+            setUserUpdateIsLoading(true);
+
+            const response = await axios.put(`/api/me/update`, userData);
+
+            if (response.data.success) {
+                mutate(`/api/me`);
+                toast.success('Profile is updated.')
+            } else {
+                console.error('Update failed:', response.data.message);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            setUserUpdateIsLoading(false);
+        };
     }
 
     const onChange = (e) => {
@@ -74,8 +81,6 @@ export default function Profile() {
             setUser({ ...user, [e.target.name]: e.target.value })
         }
     }
-
-
     return (
         <div id="contact" className="contact section-padding">
             <div className="container">
@@ -164,7 +169,11 @@ export default function Profile() {
                                                 id="login_button"
                                                 type="submit"
                                                 className="btn btn-outline-dark btn-lg btn-block mt-3"
-                                            >UPDATE</button>
+                                            >{userUpdateIsLoading ?
+                                                <div className="spinner-border" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </div>
+                                                : 'UPDATE'}</button>
                                         </div>
                                     </form>
                                 </div>

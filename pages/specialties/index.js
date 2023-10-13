@@ -6,22 +6,24 @@ function Specialties() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="section-header text-center pb-5">
+                        <div className="section-header text-center pb-2">
                             <h1>Our Services</h1>
                             <p>We offer a wide range of specialized housing solutions to cater to the unique needs of our clients. We understand that business travel and relocation can be stressful,
                                 which is why we offer tailored accommodations to ensure a comfortable and enjoyable stay!
                             </p>
                         </div>
                     </div>
-                    
-                    <Image
-                        width={1000}
-                        height={500}
-                        className="d-block w-100 mb-5"
-                        src="/images/carusel/2.png"
-                        alt="Second slide"
-                        priority
-                    />
+                    <div className="image_wrapper">
+                        <Image
+                            fill={true}
+                            quality={100}
+                            sizes='(max-width: 768px) 100vw, 700px'
+
+                            src="/images/carusel/3.jpg"
+                            alt="Second slide"
+                            priority
+                        />
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-12 col-lg-4 mb-3">

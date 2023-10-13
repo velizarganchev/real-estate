@@ -226,7 +226,6 @@ const updateUser = catchAsyncErrors(async (req, res) => {
 
 })
 
-
 // Delete user    =>   /api/admin/users/:id
 const deleteUser = catchAsyncErrors(async (req, res) => {
 

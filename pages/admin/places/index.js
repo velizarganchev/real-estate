@@ -1,24 +1,41 @@
+import { useEffect, useState } from 'react';
+
 import Loader from '../../../components/layout/Loader';
 import Link from 'next/link';
+
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { Table } from "react-bootstrap"
+import useSWR, { mutate } from "swr";
+import axios from 'axios';
 
-import { useGetAllPlacesQuery, useDeletePlaceMutation } from "../../../redux/placeApiSlice"
+import { Table } from "react-bootstrap"
 
 const AllPlaces = () => {
 
-    const {
-        data,
-        isLoading: isLoadingPlaces,
-    } = useGetAllPlacesQuery();
+    const [places, setPlaces] = useState();
+    const [isDeleteLoading, setIsDeleteloadeing] = useState(false);
 
-    const [deletePlace, { isLoading }] = useDeletePlaceMutation();
+    const { data, isLoading: isLoadingPlaces } = useSWR(`/api/admin/places`,
+        (url) => fetch(url).then((res) => res.json()));
 
+    useEffect(() => {
+        if (data) {
+            setPlaces(data.places);
+        };
+    }, [data]);
 
     const deletePlaceHandler = async (id) => {
-        deletePlace(id)
+
+        setIsDeleteloadeing(true);
+
+        axios.delete(`/api/places/${id}`)
+            .then((response) => {
+                if (response.data.success) {
+                    setIsDeleteloadeing(false);
+                    mutate(`/api/admin/places`);
+                }
+            });
     }
 
     return (
@@ -33,7 +50,7 @@ const AllPlaces = () => {
                             </Link>
                         </h1>
 
-                        {data && data.places.length !== 0 ?
+                        {places && places.length !== 0 ?
                             <Table responsive>
                                 <thead>
                                     <tr>
@@ -45,7 +62,7 @@ const AllPlaces = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.places.map((place, index) => (
+                                    {places.map((place, index) => (
                                         <tr key={index}>
                                             <td>{index}</td>
                                             <td>{place._id}</td>
@@ -55,14 +72,44 @@ const AllPlaces = () => {
                                                 <Link className="btn btn-primary" href={`/admin/places/${place._id}`}>
                                                     <i className="fa fa-pencil"></i>
                                                 </Link>
-                                                <button className="btn btn-danger mx-2" onClick={() => deletePlaceHandler(place._id)}>
-                                                    {isLoading ?
+
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-danger mx-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target={`#p${place._id}`}>
+                                                    {isDeleteLoading ?
                                                         <div className="spinner-border spinner-border-sm" role="status">
                                                             <span className="visually-hidden">Loading...</span>
                                                         </div> :
                                                         <i className="fa fa-trash"></i>
                                                     }
                                                 </button>
+
+                                                <div className="modal fade" id={"p" + place._id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div className="modal-dialog">
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete {place.name}!</h1>
+                                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div className="modal-footer">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-outline-dark" data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-outline-danger mx-2"
+                                                                    onClick={() => deletePlaceHandler(place._id)}
+                                                                    data-bs-dismiss="modal">
+                                                                    Delete
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

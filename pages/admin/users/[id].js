@@ -7,44 +7,66 @@ import { useRouter } from 'next/router'
 
 import { toast } from 'react-toastify';
 
-import { useGetUserAdminDetailsQuery, useUpdateAdminUserMutation } from "../../../redux/adminApiSlice";
+import useSWR, { mutate } from "swr";
+import axios from 'axios';
 
 const UpdateUser = () => {
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [role, setRole] = useState('')
+    const [user, setUser] = useState(
+        {
+            userId: '',
+            name: '',
+            email: '',
+            role: ''
+        });
+    const [isUpdateLoading, setIsUpdateLoading] = useState(false);
 
     const router = useRouter();
     const userId = router.query.id;
 
-    const { data, error, isLoading } = useGetUserAdminDetailsQuery(userId);
-
-    const [updateAdminUser, { isLoading: isUpdateLoading }] = useUpdateAdminUserMutation();
+    const { data, error, isLoading } = useSWR(`/api/admin/users/${userId}`,
+        (url) => fetch(url).then((res) => res.json()));
 
     useEffect(() => {
 
         if (data) {
-            setName(data.user.name)
-            setEmail(data.user.email)
-            setRole(data.user.role)
+            setUser({
+                ...user,
+                userId: userId,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role
+            });
         }
         if (error) {
             toast.error(error);
         }
-    }, [data, error])
+    }, [data, error]);
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        const userData = {
-            userId, name, email, role
-        }
-        updateAdminUser(userData).then(function (res) {
-            if (res.data.success) {
-                router.push('/admin/users')
-            }
+    const handleChange = (e) => {
+        setUser({
+            ...user,
+            [e.target.name]: e.target.value,
         })
+    }
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        try {
+            setIsUpdateLoading(true);
+            const response = await axios.put(`/api/admin/users/${userId}`, user);
+
+            if (response.data.success) {
+                mutate(`/api/admin/users/${userId}`);
+                router.push('/admin/users');
+            } else {
+                console.error('Update failed:', response);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            setIsUpdateLoading(false);
+        }
     }
 
     return (
@@ -63,8 +85,8 @@ const UpdateUser = () => {
                                         id="name_field"
                                         className="form-control"
                                         name="name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
+                                        value={user.name}
+                                        onChange={handleChange}
                                     />
                                 </div>
 
@@ -75,8 +97,8 @@ const UpdateUser = () => {
                                         id="email_field"
                                         className="form-control"
                                         name="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        value={user.email}
+                                        onChange={handleChange}
                                     />
                                 </div>
 
@@ -84,20 +106,21 @@ const UpdateUser = () => {
                                     <label htmlFor="role_field">Role</label>
 
                                     <select id="role_field" className="form-control" name="role"
-                                        value={role}
-                                        onChange={(e) => setRole(e.target.value)}
-
+                                        value={user.role}
+                                        onChange={handleChange}
                                     >
-
                                         <option value="user">user</option>
                                         <option value="admin">admin</option>
                                     </select>
                                 </div>
-
                                 <button
                                     type="submit"
                                     className="btn btn-outline-dark btn-lg btn-block mt-3">
-                                    Update
+                                    {isUpdateLoading ?
+                                        <div className="spinner-border spinner-border-sm" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div> :
+                                        "Update"}
                                 </button>
                             </form>
                         </div>

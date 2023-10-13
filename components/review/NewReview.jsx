@@ -1,23 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router';
 
-import { useCheckAvailabilityQuery, useCreateReviewMutation } from '../../redux/reviewApiSlice';
+import axios from 'axios';
+import useSWR, { mutate } from "swr";
 
 export default function NewReview() {
 
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
-    const [show, setShow] = useState(false);
+    const [origin, setOrigin] = useState('');
 
     const router = useRouter();
-
     const { id } = router.query;
 
-    const { data } = useCheckAvailabilityQuery(id);
+    useEffect(() => {
+        const { origin } = window.location;
+        setOrigin(origin);
+    }, []);
 
-    const [createReview, { isLoading }] = useCreateReviewMutation();
-
+    const { data, error } = useSWR(`/api/reviews/check_review_availability?placeId=${id}`,
+        (url) => fetch(url).then((res) => res.json())
+    );
 
     const submitHandler = async () => {
 
@@ -25,7 +29,11 @@ export default function NewReview() {
             rating, comment, placeId: id
         }
 
-        createReview(reviewData)
+        axios.put(`${origin}/api/reviews`, reviewData).then((response) => {
+            if (response.data.success) {
+                mutate(`/api/reviews?id=${id}`);
+            }
+        });
     }
 
     function setUserRatings() {
@@ -70,9 +78,9 @@ export default function NewReview() {
     }
 
     return (
-        <>
+        <div className='d-grid gap-2 mt-2 mb-4'>
             {data && data.isReviewAvailable &&
-                <button onClick={setUserRatings} type="button" className='btn btn-outline-dark btn-lg btn-block m-2' data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button onClick={setUserRatings} type="button" className='btn btn-outline-dark btn-lg btn-block p-2' data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Submit Your Review
                 </button>
             }
@@ -110,6 +118,8 @@ export default function NewReview() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
+
+

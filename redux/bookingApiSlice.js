@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
-export const bookingApi = createApi({
+export const bookingApi = createApi({ 
     reducerPath: 'bookingApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://real-estatev.vercel.app/api/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api/' }),
     tagTypes: ['Bookings', 'Admin', 'Places'],
     endpoints: (builder) => ({
         getAllMyBookings: builder.query({

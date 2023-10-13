@@ -10,12 +10,16 @@ const PlaceShema = new mongoose.Schema({
     pricePerNight: {
         type: Number,
         required: [true, 'Please enter place price per night'],
-        maxLength: [4, 'Place name cannot exceed 4 characters'],
+        maxLength: [9999, 'Price cannot exceed 9999'],
         default: 0.0
     },
     description: {
         type: String,
         required: [true, 'Please enter place description'],
+    },
+    city: {
+        type: String,
+        required: [true, 'Please enter place city'],
     },
     address: {
         type: String,

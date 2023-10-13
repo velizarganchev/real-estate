@@ -1,100 +1,148 @@
 import Image from 'next/image'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { useCreatePlaceMutation } from '../../../redux/placeApiSlice'
+import { mutate } from "swr";
+import axios from 'axios'
+
 import { toast } from 'react-toastify';
 
 
 const NewPlace = () => {
 
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
-    const [description, setDescription] = useState('')
-    const [address, setAddress] = useState('')
-    const [checkIn, setCheckIn] = useState(3)
-    const [checkOut, setCheckOut] = useState(10)
-    const [guestCapacity, setGuestCapacity] = useState(1)
-    const [numOfBeds, setNumOfBeds] = useState(1)
-    const [internet, setInternet] = useState(false)
-    const [parking, setParking] = useState(false)
-    const [airConditioned, setAirConditioned] = useState(false)
-    const [petsAllowed, setPetsAllowed] = useState(false)
-    const [entertainment, setEntertainment] = useState(false)
-    const [kitchen, setKitchen] = useState(false)
-    const [washer, setWasher] = useState(false)
-    const [refrigerator, setRefrigerator] = useState(false)
-    const [dryer, setDryer] = useState(false)
-    const [selfCheckIn, setSelfCheckIn] = useState(false)
+    const router = useRouter();
 
-    const [images, setImages] = useState([])
-    const [imagesPreview, setImagesPreview] = useState([])
+    const [form, setForm] = useState({
+        name: '',
+        pricePerNight: '',
+        description: '',
+        city: '',
+        address: '',
+        checkIn: 3,
+        checkOut: 10,
+        guestCapacity: 1,
+        numOfBeds: 1,
+        internet: false,
+        parking: false,
+        airConditioned: false,
+        petsAllowed: false,
+        entertainment: false,
+        kitchen: false,
+        washer: false,
+        refrigerator: false,
+        dryer: false,
+        selfCheckIn: false,
+    });
 
-    const router = useRouter()
+    const [images, setImages] = useState([]);
+    const [imagesPreview, setImagesPreview] = useState([]);
 
-    const [createPlace, { isLoading, isFetching }] = useCreatePlaceMutation();
+    const [origin, setOrigin] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    
+    useEffect(() => {
+        const { origin } = window.location;
+        setOrigin(origin);
+    }, []);
+
+    const handleChange = (e) => {
+
+        const { name, type, value, checked } = e.target;
+
+        setForm((prev) => {
+
+            if (type === "checkbox") {
+                return {
+                    ...prev,
+                    [name]: checked,
+                };
+            } else {
+                return {
+                    ...prev,
+                    [name]: value
+                };
+            }
+        });
+    };
+
     const submitHandler = (e) => {
         e.preventDefault()
 
         const placeData = {
-            name,
-            pricePerNight: price,
-            description,
-            address,
-            checkIn: Number(checkIn),
-            checkOut: Number(checkOut),
-            guestCapacity: Number(guestCapacity),
-            numOfBeds: Number(numOfBeds),
-            internet,
-            airConditioned,
-            petsAllowed,
-            parking,
-            entertainment,
-            kitchen,
-            refrigerator,
-            washer,
-            dryer,
-            selfCheckIn,
+            name: form.name,
+            pricePerNight: form.pricePerNight,
+            description: form.description,
+            city: form.city,
+            address: form.address,
+            checkIn: Number(form.checkIn),
+            checkOut: Number(form.checkOut),
+            guestCapacity: Number(form.guestCapacity),
+            numOfBeds: Number(form.numOfBeds),
+            internet: form.internet,
+            airConditioned: form.airConditioned,
+            petsAllowed: form.petsAllowed,
+            parking: form.parking,
+            entertainment: form.entertainment,
+            kitchen: form.kitchen,
+            refrigerator: form.refrigerator,
+            washer: form.washer,
+            dryer: form.dryer,
+            selfCheckIn: form.selfCheckIn,
             images
         }
 
-        if (images.length === 0) return toast.error('Please upload images.')
+        if (images.length === 0) return toast.error('Please upload images.');
 
-        createPlace(placeData).then(function (res) {
-            
-            if (res.data.success) {
-                router.push('/admin/places')
-            }
-        })
-    }
+        try {
+            setIsLoading(true);
+
+            axios.post(`${origin}/api/places`, placeData).then((response) => {
+                if (response.data.success) {
+                    mutate(`/api/admin/places`);
+                    setIsLoading(false);
+
+                    router.push('/admin/places');
+                }
+            });
+
+        } catch (error) {
+            console.log(error)
+        }
+    };
 
     const onChange = (e) => {
+        const files = Array.from(e.target.files);
 
-        const files = Array.from(e.target.files)
+        const maxSize = 2 * 1024 * 1024; // 2 MB (adjust as needed)
 
-        setImages([]);
-        setImagesPreview([]);
+        const validFiles = files.filter((file) => file.size <= maxSize);
 
-        files.forEach(file => {
+        if (validFiles.length < files.length) {
 
-            const reader = new FileReader();
+            toast.error('Some files are too large.');
+            console.error('Some files are too large.');
+        } else {
 
-            reader.onload = () => {
-                if (reader.readyState === 2) {
-                    setImages(oldArray => [...oldArray, reader.result]);
-                    setImagesPreview(oldArray => [...oldArray, reader.result]);
-                }
-            }
-            reader.readAsDataURL(file)
+            setImages([]);
+            setImagesPreview([]);
 
-        })
-    }
+            validFiles.forEach((file) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    if (reader.readyState === 2) {
+                        setImages((oldArray) => [...oldArray, reader.result]);
+                        setImagesPreview((oldArray) => [...oldArray, reader.result]);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    };
 
     return (
         <div className="container container-fluid">
@@ -106,10 +154,11 @@ const NewPlace = () => {
                             <label htmlFor="name_field">Name</label>
                             <input
                                 type="text"
+                                name='name'
                                 id="name_field"
                                 className="form-control"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={form.name}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -117,10 +166,11 @@ const NewPlace = () => {
                             <label htmlFor="price_field">Price</label>
                             <input
                                 type="text"
+                                name='pricePerNight'
                                 id="price_field"
                                 className="form-control"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
+                                value={form.price}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -128,21 +178,36 @@ const NewPlace = () => {
                             <label htmlFor="description_field">Description</label>
                             <textarea
                                 className="form-control"
+                                name='description'
                                 id="description_field"
                                 rows="8"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                value={form.description}
+                                onChange={handleChange}
                                 required
                             ></textarea>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="address_field">Address</label>
+                            <label htmlFor="city_field">City</label>
                             <input
                                 type="text"
+                                name='city'
+                                id="city_field"
+                                className="form-control"
+                                value={form.city}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="address_field">Street</label>
+                            <input
+                                type="text"
+                                name='address'
                                 id="address_field"
                                 className="form-control"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
+                                value={form.address}
+                                onChange={handleChange}
                                 required
                             />
                         </div>
@@ -151,9 +216,10 @@ const NewPlace = () => {
                             <label htmlFor="checkIn_field">Check-in</label>
                             <select
                                 className="form-control"
+                                name='checkIn'
                                 id="checkIn_field"
-                                value={checkIn}
-                                onChange={(e) => setCheckIn(e.target.value)}
+                                value={form.checkIn}
+                                onChange={handleChange}
                             >
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(num => (
                                     <option key={num} value={num}>{num}</option>
@@ -165,11 +231,27 @@ const NewPlace = () => {
                             <label htmlFor="checkOut_field">Checkout</label>
                             <select
                                 className="form-control"
+                                name='checkOut'
                                 id="checkOut_field"
-                                value={checkOut}
-                                onChange={(e) => setCheckOut(e.target.value)}
+                                value={form.checkOut}
+                                onChange={handleChange}
                             >
                                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(num => (
+                                    <option key={num} value={num}>{num}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="category_field">Number of Beds</label>
+                            <select
+                                className="form-control"
+                                name='numOfBeds'
+                                id="numofbeds_field"
+                                value={form.numOfBeds}
+                                onChange={handleChange}
+                            >
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                                     <option key={num} value={num}>{num}</option>
                                 ))}
                             </select>
@@ -179,40 +261,26 @@ const NewPlace = () => {
                             <label htmlFor="category_field">Guest Capacity</label>
                             <select
                                 className="form-control"
+                                name='guestCapacity'
                                 id="guest_field"
-                                value={guestCapacity}
-                                onChange={(e) => setGuestCapacity(e.target.value)}
+                                value={form.guestCapacity}
+                                onChange={handleChange}
                             >
-                                {[1, 2, 3, 4, 5, 6].map(num => (
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15].map(num => (
                                     <option key={num} value={num}>{num}</option>
                                 ))}
                             </select>
                         </div>
-
-
-                        <div className="form-group">
-                            <label htmlFor="category_field">Number of Beds</label>
-                            <select
-                                className="form-control"
-                                id="numofbeds_field"
-                                value={numOfBeds}
-                                onChange={(e) => setNumOfBeds(e.target.value)}
-                            >
-                                {[1, 2, 3, 4, 5].map(num => (
-                                    <option key={num} value={num}>{num}</option>
-                                ))}
-                            </select>
-                        </div>
-
 
                         <label className="mb-3">Place Features</label>
                         <div className="form-check">
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='internet'
                                 id="internet_checkbox"
-                                value={internet}
-                                onChange={(e) => setInternet(e.target.checked)}
+                                value={form.internet}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="internet_checkbox">
                                 Internet
@@ -222,9 +290,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='parking'
                                 id="parking_checkbox"
-                                value={parking}
-                                onChange={(e) => setParking(e.target.checked)}
+                                value={form.parking}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="parking_checkbox">
                                 Free parking on premises
@@ -234,8 +303,9 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='airConditioned'
                                 id="airConditioned_checkbox"
-                                value={airConditioned}
+                                value={form.airConditioned}
                                 onChange={(e) => setAirConditioned(e.target.checked)}
                             />
                             <label className="form-check-label" htmlFor="airConditioned_checkbox">
@@ -246,9 +316,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='petsAllowed'
                                 id="petsAllowed_checkbox"
-                                value={petsAllowed}
-                                onChange={(e) => setPetsAllowed(e.target.checked)}
+                                value={form.petsAllowed}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="petsAllowed_checkbox">
                                 Pets Allowed
@@ -258,9 +329,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='entertainment'
                                 id="entertainment_checkbox"
-                                value={entertainment}
-                                onChange={(e) => setEntertainment(e.target.checked)}
+                                value={form.entertainment}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="entertainment_checkbox">
                                 Entertainment
@@ -270,9 +342,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='kitchen'
                                 id="kitchen_checkbox"
-                                value={kitchen}
-                                onChange={(e) => setKitchen(e.target.checked)}
+                                value={form.kitchen}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="kitchen_checkbox">
                                 Kitchen
@@ -282,9 +355,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='refrigerator'
                                 id="refrigerator_checkbox"
-                                value={refrigerator}
-                                onChange={(e) => setRefrigerator(e.target.checked)}
+                                value={form.refrigerator}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="refrigerator_checkbox">
                                 Refrigerator
@@ -294,9 +368,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='washer'
                                 id="washer_checkbox"
-                                value={washer}
-                                onChange={(e) => setWasher(e.target.checked)}
+                                value={form.washer}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="washer_checkbox">
                                 Washer
@@ -306,9 +381,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='dryer'
                                 id="dryer_checkbox"
-                                value={washer}
-                                onChange={(e) => setDryer(e.target.checked)}
+                                value={form.dryer}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="dryer_checkbox">
                                 Dryer
@@ -318,9 +394,10 @@ const NewPlace = () => {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
+                                name='selfCheckIn'
                                 id="selfCheckIn_checkbox"
-                                value={washer}
-                                onChange={(e) => setSelfCheckIn(e.target.checked)}
+                                value={form.selfCheckIn}
+                                onChange={handleChange}
                             />
                             <label className="form-check-label" htmlFor="selfCheckIn_checkbox">
                                 Self check-In
@@ -328,7 +405,9 @@ const NewPlace = () => {
                         </div>
 
                         <div className="form-group mt-4">
-                            <label>Images</label>
+                            <label className="custom-file-label" htmlFor="customFile">
+                                Choose Images
+                            </label>
                             <div className="custom-file">
                                 <input
                                     type="file"
@@ -338,9 +417,7 @@ const NewPlace = () => {
                                     onChange={onChange}
                                     multiple
                                 />
-                                <label className="custom-file-label" htmlFor="customFile">
-                                    Choose Images
-                                </label>
+
                             </div>
 
                             {imagesPreview.map(img => (

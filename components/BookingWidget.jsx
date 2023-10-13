@@ -3,11 +3,9 @@ import Link from 'next/link';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
+import useSWR from "swr";
+
 import axios from "axios";
-
-import { useGetAllBookedDatesQuery, useCreateBookingMutation } from '../redux/bookingApiSlice'
-import { useGetCurrUserQuery } from "../redux/userApiSlice";
-
 import { toast } from 'react-toastify'
 
 import DatePicker from "react-datepicker";
@@ -26,14 +24,15 @@ export default function BookingWidget({ place }) {
 
     const router = useRouter();
 
-    const { data: user } = useGetCurrUserQuery();
-    const [createBooking, { isLoading }] = useCreateBookingMutation();
+    const { data: user, error } = useSWR(`http://localhost:3000/api/me`,
+        (url) => fetch(url).then((res) => res.json()));
 
     const [checkInDate, setCheckInDate] = useState()
     const [checkOutDate, setCheckOutDate] = useState()
     const [daysOfStay, setDaysOfStay] = useState()
     const [available, setAvailable] = useState()
     const [toCheckOut, setToCheckOut] = useState(false)
+
 
     const amount = daysOfStay * place.pricePerNight;
     const currency = "USD";
@@ -43,7 +42,8 @@ export default function BookingWidget({ place }) {
 
     const { id } = router.query;
 
-    const { data: dates } = useGetAllBookedDatesQuery(id);
+    const { data: dates } = useSWR(`/api/bookings/check_booked_dates?placeId=${id}`, (url) => fetch(url)
+        .then((res) => res.json()));
 
     if (dates) {
 
@@ -116,11 +116,12 @@ export default function BookingWidget({ place }) {
                 }
             }
 
-            createBooking(bookingData).then(function (res) {
-                if (res.data.success) {
-                    router.push('/bookings/me')
-                }
-            })
+            axios.post(`http://localhost:3000/api/bookings`, bookingData)
+                .then((response) => {
+                    if (response.data.success) {
+                        router.push('/bookings/me')
+                    }
+                });
         }
 
         return (<>
@@ -162,7 +163,6 @@ export default function BookingWidget({ place }) {
 
     return (
         <div className="col col-lg-4 col-sm-12 shadow p-3 my-5 bg-body rounded">
-            <div className="">
                 <div className="d-flex justify-content-between">
                     <div className="text-uppercase">
                         {daysOfStay > 0 ?
@@ -194,7 +194,7 @@ export default function BookingWidget({ place }) {
                 {available === false &&
                     <div className="alert alert-danger my-3 font-weight-bold">Place not available. Try different dates.</div>
                 }
-                {available && !user &&
+                {available && !user.success &&
                     <>
                         <div className="alert alert-danger my-3 font-weight-bold">
                             Login to book place.
@@ -203,7 +203,7 @@ export default function BookingWidget({ place }) {
                     </>
                 }
 
-                {available && user &&
+                {available && user.success &&
                     <div className="d-grid gap-2 mt-5">
                         {toCheckOut ?
                             (<PayPalScriptProvider
@@ -236,6 +236,5 @@ export default function BookingWidget({ place }) {
                     <p className="">Enter your travel dates to see the total price per night.</p>
                 </div>
             </div>
-        </div>
     )
 }

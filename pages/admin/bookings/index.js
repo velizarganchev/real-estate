@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import Loader from '../../../components/layout/Loader';
+
+import { useState } from 'react';
+
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { useGetAllBookingsQuery, useDeleteBookingMutation } from "../../../redux/bookingApiSlice"
+import useSWR, { mutate } from "swr";
+import axios from 'axios';
 
 import { Table } from "react-bootstrap"
 
@@ -11,8 +15,10 @@ import { Table } from "react-bootstrap"
 
 const AllBookings = () => {
 
-    const { data: allBookings, error, isLoading } = useGetAllBookingsQuery();
-    const [deleteBooking, { isLoading: isBookingLoading }] = useDeleteBookingMutation();
+    const [isDeleteBookingLoading, setIsDeleteBookingLoading] = useState(false);
+
+    const { data: allBookings, error, isLoading } = useSWR(`/api/admin/bookings`,
+        (url) => fetch(url).then((res) => res.json()));
 
     function addOneDay(dateStr) {
         const date = new Date(dateStr)
@@ -85,7 +91,15 @@ const AllBookings = () => {
 
 
     const deleteBookingHandler = async (bookingId) => {
-        deleteBooking(bookingId)
+        setIsDeleteBookingLoading(true);
+
+        axios.delete(`/api/admin/bookings/${bookingId}`)
+            .then((response) => {
+                if (response.data.success) {
+                    setIsDeleteBookingLoading(false);
+                    mutate(`/api/admin/bookings`);
+                }
+            });
     }
 
     return (
@@ -120,12 +134,42 @@ const AllBookings = () => {
                                                 <Link className="btn btn-primary" href={`/bookings/${booking._id}`}>
                                                     <i className="fa fa-eye"></i>
                                                 </Link>
-                                                {/* <button className="btn btn-success mx-2" onClick={() => downloadInvoice(booking)}>
-                                                    <i className="fa fa-download"></i>
-                                                </button> */}
-                                                <button className="btn btn-danger mx-2" onClick={() => deleteBookingHandler(booking._id)}>
-                                                    <i className="fa fa-trash"></i>
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-danger mx-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target={`#b${booking._id}`}>
+                                                    {isDeleteBookingLoading
+                                                        ?
+                                                        <div className="spinner-border spinner-border-sm" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div> :
+                                                        <i className="fa fa-trash"></i>}
                                                 </button>
+                                                <div className="modal fade" id={"b" + booking._id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div className="modal-dialog">
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete {booking._id}!</h1>
+                                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div className="modal-footer">
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-outline-dark" data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="btn btn-outline-danger mx-2"
+                                                                    onClick={() => deleteBookingHandler(booking._id)}
+                                                                    data-bs-dismiss="modal">
+                                                                    Delete
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

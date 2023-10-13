@@ -1,30 +1,41 @@
-import Loader from '../../../components/layout/Loader';
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../api/auth/[...nextauth]"
 
-import { useGetAllReviewsQuery, useDeleteReviewMutation } from "../../../redux/reviewApiSlice"
+import useSWR, { mutate } from "swr";
+
 import { useState } from "react"
+import axios from 'axios';
 
 import { Table } from "react-bootstrap"
-
 import { toast } from 'react-toastify'
 
 const AllReviews = () => {
 
     const [placeId, setPlaceId] = useState('')
+    const [isDeleteReviewLoading, setIsDeleteReviewLoading] = useState(false);
 
-    const { data: allReviews, error } = useGetAllReviewsQuery(placeId);
+    const { data: allReviews, error } = useSWR(`/api/reviews?id=${placeId}`,
+        (url) => fetch(url).then((res) => res.json()));
 
-    const [deleteReview, { isLoading }] = useDeleteReviewMutation();
-
-    const deleteReviewHandler = async (id) => {
-        if (placeId) {
-            deleteReview({ id, placeId })
-            if (error) {
-                toast.error(error)
+    const deleteReviewHandler = async (reviewId, placeId) => {
+        try {
+            if (!placeId) {
+                return;
             }
+
+            setIsDeleteReviewLoading(true);
+
+            const response = await axios.delete(`/api/reviews?id=${reviewId}&placeId=${placeId}`);
+
+            if (response.data.success) {
+                setIsDeleteReviewLoading(false);
+                mutate(`/api/reviews?id=${placeId}`);
+            }
+        } catch (error) {
+            toast.error('Error deleting review:', error)
+            setIsDeleteReviewLoading(false);
         }
-    }
+    };
 
     return (
         <>
@@ -46,7 +57,7 @@ const AllReviews = () => {
                     </div>
                 </div>
             </div>
-            {allReviews && allReviews.reviews.length !== 0 ?
+            {allReviews && allReviews.success && allReviews.reviews.length !== 0 ?
                 <>
                     <h1 className='text-center my-5'>All Reviews</h1>
                     <Table responsive>
@@ -69,9 +80,42 @@ const AllReviews = () => {
                                     <td>{review.comment}</td>
                                     <td>{review.name}</td>
                                     <td className="d-flex">
-                                        <button className="btn btn-danger mx-2" onClick={() => deleteReviewHandler(review._id)}>
-                                            <i className="fa fa-trash"></i>
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger mx-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target={`#r${review._id}`}>
+                                            {isDeleteReviewLoading
+                                                ?
+                                                <div className="spinner-border spinner-border-sm" role="status">
+                                                    <span className="visually-hidden">Loading...</span>
+                                                </div> :
+                                                <i className="fa fa-trash"></i>}
                                         </button>
+                                        <div className="modal fade" id={"r" + review._id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure you want to delete {review._id}!</h1>
+                                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-outline-dark" data-bs-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-outline-danger mx-2"
+                                                            onClick={() => deleteReviewHandler(review._id, placeId)}
+                                                            data-bs-dismiss="modal">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

@@ -9,8 +9,6 @@ import APIFeatures from "../utils/apiFeatures";
 // Get All Places
 const allPlaces = catchAsyncErrors(async (req, res) => {
 
-    // return next(new ErrorHandler('Place not found with this ID.', 404))
-
     const resPerPage = 4;
     const placesCount = await Place.countDocuments();
 
@@ -63,9 +61,10 @@ const newPlace = catchAsyncErrors(async (req, res) => {
     res.status(200).json({
         success: true,
         place: place
-    })
+    });
 
-})
+});
+
 // Get place details => /api/places/:id
 
 const getSingelePlace = catchAsyncErrors(async (req, res, next) => {
@@ -80,7 +79,7 @@ const getSingelePlace = catchAsyncErrors(async (req, res, next) => {
         place: place
     })
 
-})
+});
 
 // Update place => /api/places/:id
 const updatePlace = catchAsyncErrors(async (req, res) => {
@@ -195,7 +194,7 @@ const createPlaceReview = catchAsyncErrors(async (req, res) => {
 })
 
 
-// Check Review Availability   =>   /api/reviews/check_review_availability
+// Check Review Availability   =>   /api/reviews/check_review_availability 
 const checkReviewAvailability = catchAsyncErrors(async (req, res) => {
 
     const { placeId } = req.query;
@@ -210,7 +209,6 @@ const checkReviewAvailability = catchAsyncErrors(async (req, res) => {
         success: true,
         isReviewAvailable
     })
-
 })
 
 
@@ -238,6 +236,7 @@ const getPlaceReviews = catchAsyncErrors(async (req, res) => {
     })
 
 })
+
 
 // Delete place review - ADMIN   =>   /api/reviews
 const deleteReview = catchAsyncErrors(async (req, res) => {

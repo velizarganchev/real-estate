@@ -13,7 +13,7 @@ import { Provider } from 'react-redux'
 
 import { SessionProvider } from "next-auth/react"
 
-export default function App({ Component, pageProps: { session, ...pageProps } }) {
+function App({ Component, pageProps: { session, ...pageProps } }) {
 
   useEffect(() => {
     require("bootstrap/dist/js/bootstrap.bundle.min.js");
@@ -29,4 +29,4 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
     </SessionProvider>
   )
 }
-
+export default App;

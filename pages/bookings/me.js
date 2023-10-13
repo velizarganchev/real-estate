@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import Loader from '../../components/layout/Loader'
+import Loader from '../../components/layout/Loader';
 
-import { useGetAllMyBookingsQuery } from "../../redux/bookingApiSlice"
-
+import useSWR, { mutate } from "swr";
 import { Table } from "react-bootstrap"
 
 // import easyinvoice from 'easyinvoice'
 
 const MyBookings = () => {
 
-  const { data: myBookings, error, isLoading } = useGetAllMyBookingsQuery();
+  const { data: myBookings, error, isLoading } = useSWR(`/api/bookings/me`,
+    (url) => fetch(url).then((res) => res.json()));
 
   function addOneDay(dateStr) {
     const date = new Date(dateStr)

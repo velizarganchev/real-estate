@@ -8,7 +8,7 @@ const Footer = dynamic(() => import("./Footer"));
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Layout({ children, title = 'Book Best Place for your Holiday' }) {
+function Layout({ children, title = 'Book Best Place for your Holiday' }) {
     return (
         <div>
             <Head>
@@ -24,3 +24,4 @@ export default function Layout({ children, title = 'Book Best Place for your Hol
         </div>
     )
 }
+export default Layout;

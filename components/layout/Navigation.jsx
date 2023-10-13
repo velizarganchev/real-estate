@@ -9,7 +9,7 @@ import { NavDropdown } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { useSession, signOut } from 'next-auth/react';
 
-export default function Navigation() {
+function Navigation() {
 
   const { data: session, status } = useSession()
 
@@ -58,3 +58,4 @@ export default function Navigation() {
     </Navbar>
   );
 }
+export default Navigation;

@@ -131,13 +131,41 @@ const getBookingDetails = catchAsyncErrors(async (req, res) => {
         .populate({
             path: 'user',
             select: 'name email'
-        })
+        });
+
+    if (!booking) {
+        return res.status(404).json({
+            success: false,
+            message: 'Booking not found'
+        });
+    }
+
+    if (!booking.place) {
+        return res.status(404).json({
+            success: false,
+            message: 'Associated place not found for this booking'
+        });
+    }
 
     res.status(200).json({
         success: true,
         booking
-    })
-})
+    });
+    // const booking = await Booking.findById(req.query.id)
+    //     .populate({
+    //         path: 'place',
+    //         select: 'name pricePerNight images'
+    //     })
+    //     .populate({
+    //         path: 'user',
+    //         select: 'name email'
+    //     })
+
+    // res.status(200).json({
+    //     success: true,
+    //     booking
+    // })
+});
 
 
 // Get all bookings - ADMIN   =>   /api/admin/bookings
