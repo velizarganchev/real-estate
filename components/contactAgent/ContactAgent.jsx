@@ -50,11 +50,11 @@ function ContactAgent() {
                         </div>
                         <div className="row">
                             <div className="col-md-6 col-lg-4">
-                                <img src="/images/sierrahScarpin.jpg" alt="" className="img-fluid" />
+                                <img src="/images/iva-about.jpg" alt="" className="img-fluid" />
                             </div>
                             <div className="col-md-6 col-lg-4">
                                 <div className={classes.property_agent}>
-                                    <h4 className={classes.title_agent}>Sierrah Scarpine</h4>
+                                    <h4 className={classes.title_agent}>Iva Whited</h4>
                                     <p>
                                         Nulla porttitor accumsan tincidunt. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet
                                         dui. Quisque velit nisi,
@@ -63,31 +63,31 @@ function ContactAgent() {
                                     <ul className="list-unstyled">
                                         <li className="d-flex justify-content-between">
                                             <strong>Phone:</strong>
-                                            <span>+ 714-858-0201</span>
+                                            <span>+ 777-777-777</span>
                                         </li>
                                         <li className="d-flex justify-content-between">
                                             <strong>Mobile:</strong>
-                                            <span>+ 714-858-0201</span>
+                                            <span>+ 777-777-777</span>
                                         </li>
                                         <li className="d-flex justify-content-between">
                                             <strong>Email:</strong>
-                                            <span>sierrah.scarpine@aspectrep.com</span>
+                                            <span>iva.whited@gmail.com</span>
                                         </li>
                                         <li className="d-flex justify-content-between">
                                             <strong>Skype:</strong>
-                                            <span>sierrah.scarpine</span>
+                                            <span>iva.whited</span>
                                         </li>
                                     </ul>
                                     <div className="socials-a">
                                         <ul className="list-inline">
                                             <li className="list-inline-item">
-                                                <Link className="text-dark" style={{ fontSize: '30px', }} href="https://www.facebook.com/sierrah.scarpine/"><i className="fa-brands fa-facebook"></i></Link>
+                                                <Link className="text-dark" style={{ fontSize: '30px', }} href="https://www.facebook.com/ivaila.gancheva"><i className="fa-brands fa-facebook"></i></Link>
                                             </li>
                                             <li className="list-inline-item">
-                                                <Link className="text-dark " style={{ fontSize: '30px' }} href="https://www.instagram.com/sierrahscarpine/"><i className="fa-brands fa-instagram"></i></Link>
+                                                <Link className="text-dark " style={{ fontSize: '30px' }} href="https://www.instagram.com/iva.whited/"><i className="fa-brands fa-instagram"></i></Link>
                                             </li>
                                             <li className="list-inline-item">
-                                                <Link className="text-dark " style={{ fontSize: '30px' }} href="https://www.linkedin.com/in/sierrah-scarpine-113b2b154/"><i className="fa-brands fa-linkedin"></i></Link>
+                                                <Link className="text-dark " style={{ fontSize: '30px' }} href="https://www.linkedin.com/in/iva-whited-977394159/"><i className="fa-brands fa-linkedin"></i></Link>
                                             </li>
                                         </ul>
                                     </div>

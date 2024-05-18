@@ -14,12 +14,12 @@ export default function Footer() {
                         <h6 className="text-uppercase fw-bold mb-4 text-light">Contact</h6>
                         <p className='text-light'>
                             <i className="fas fa-envelope me-3"></i>
-                            sierrah.scarpine@aspectrep.com
+                            iva.whited.com
                         </p>
-                        <p className='text-light'><i className="fas fa-phone me-3"></i> + 714-858-0201</p>
-                        <Link className="me-2 text-light " style={{ fontSize: '20px' }} href="https://www.facebook.com/sierrah.scarpine/"><i className="fa-brands fa-facebook"></i></Link>
-                        <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.instagram.com/sierrahscarpine/"><i className="fa-brands fa-instagram"></i></Link>
-                        <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.linkedin.com/in/sierrah-scarpine-113b2b154/"><i className="fa-brands fa-linkedin"></i></Link>
+                        <p className='text-light'><i className="fas fa-phone me-3"></i> + 777-777-777</p>
+                        <Link className="me-2 text-light " style={{ fontSize: '20px' }} href="https://www.facebook.com/ivaila.gancheva"><i className="fa-brands fa-facebook"></i></Link>
+                        <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.instagram.com/iva.whited/"><i className="fa-brands fa-instagram"></i></Link>
+                        <Link className="mx-2 text-light" style={{ fontSize: '20px' }} href="https://www.linkedin.com/in/iva-whited-977394159/"><i className="fa-brands fa-linkedin"></i></Link>
 
                     </div>
                     <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
@@ -42,7 +42,7 @@ export default function Footer() {
                 </Nav>
             </Navbar>
             <div className="text-center text-light p-4">
-                © {year} Copyright by Sierrah Scarpine
+                © {year} Copyright by Iva Whited
             </div>
         </footer>
     )

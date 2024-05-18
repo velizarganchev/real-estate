@@ -24,7 +24,7 @@ function Testimonials() {
                                     </div>
                                     <div className={`${classes.content} text-center`}>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit reiciendis necessitatibus laborum numquam consequuntur possimus magnam expedita ipsam illum voluptatem quia assumenda placeat, at asperiores vitae obcaecati. Reprehenderit nesciunt voluptatem excepturi, libero ipsum tempora perspiciatis.</p>
-                                        <div className={classes.person}><img alt="" src="/images/sierrahScarpin.jpg" /></div>
+                                        <div className={classes.person}><img alt="" src="/images/iva-about.jpg" /></div>
                                         <h5>David Jones</h5>
                                         <h6>Web Developer</h6>
                                     </div>
